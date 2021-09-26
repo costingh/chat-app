@@ -125,8 +125,7 @@ const App = () => {
           )}
         </nav>
 
-        <div className="container mt-3">
-          <Switch>
+        <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
@@ -135,7 +134,6 @@ const App = () => {
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
           </Switch>
-        </div>
 
         {/* <AuthVerify logOut={logOut}/> */}
       </div>

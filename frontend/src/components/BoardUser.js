@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
+import Chat from "./Chat";
 
 const BoardUser = () => {
   const [content, setContent] = useState("");
@@ -29,12 +30,16 @@ const BoardUser = () => {
   }, []);
 
   return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
-      </header>
-    </div>
-  );
-};
+      <Chat/>
+    );
+  };
+  
+  export default BoardUser;
+  
+  {/* <div className="container">
+    <header className="jumbotron">
+      <h3>{content}</h3>
 
-export default BoardUser;
+      
+    </header>
+  </div> */}

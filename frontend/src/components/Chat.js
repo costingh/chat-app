@@ -75,7 +75,9 @@ function Chat() {
 						messages={messages}
 						setMessages={setMessages}
 					/>
-					<ChatInfos/>
+					<ChatInfos
+						currentChatContact={currentChatContact}
+					/>
 				</div>
 			</div>
 		</div>

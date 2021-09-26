@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ChatInfos() {
+function ChatInfos({currentChatContact}) {
     return (
         <div className="col-12 col-md-5 col-lg-4 col-xl-3 px-4 px-sm-5 px-lg-4 user-profile">
             <div className="user-profile__close d-flex d-xl-none">
@@ -13,10 +13,10 @@ function ChatInfos() {
             </div>
             <div className="user-profile__wrapper">
                 <div className="user-profile__avatar">
-                    <img src="https://randomuser.me/api/portraits/women/56.jpg" alt="Jenny Smith" loading="lazy"/>
+                    <img src={currentChatContact ? currentChatContact.profilePicture : './avatar_placeholder.png'} alt={currentChatContact ? currentChatContact.username : 'image'} loading="lazy"/>
                 </div>
                 <div className="user-profile__details mt-1">
-                    <span className="user-profile__name">Jenny Smith</span>
+                    <span className="user-profile__name">{currentChatContact ? currentChatContact.username : 'John Doe'}</span>
                     <span className="user-profile__phone">(025) 015-234-567</span>
                     <span className="user-profile__location">New York, United States</span>
                 </div>
@@ -26,18 +26,17 @@ function ChatInfos() {
                 <div className="user-profile__learning mt-4">
                     <span className="user-profile__label">Social Medias</span>
                     <ul className="user-profile__tags user-profile__tags--primary mt-2">
-                        <li><a href="https://www.instagram.com/tiantsoa_sh/" target="_blank">Instagram</a></li>
-                        <li><a href="https://www.linkedin.com/in/tiantsoa-rabemananjara-254655152/" target="_blank">Linkedin</a></li>
-                        <li><a href="https://codepen.io/tiantsoa" target="_blank">Codepen</a></li>
+                        {currentChatContact && currentChatContact.socialMedias.map(social => {
+                            return <li key={social.name}><a href={social.link} target="_blank">{social.name}</a></li>
+                        })}
                     </ul>
                 </div>
                 <div className="user-profile__hobbies">
                     <span className="user-profile__label">Activities</span>
                     <ul className="user-profile__tags user-profile__tags--secondary mt-2">
-                        <li>Biking</li>
-                        <li>Cooking</li>
-                        <li>Traveling</li>
-                        <li>Grahic design</li>
+                        {currentChatContact && currentChatContact.activities.map((activity, index) => {
+                            return <li key={index}>{activity}</li>
+                        })}
                     </ul>
                 </div>
             </div>

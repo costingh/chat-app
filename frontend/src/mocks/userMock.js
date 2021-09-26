@@ -7,6 +7,27 @@ export const userMockList = [
         status: 'online',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -17,6 +38,27 @@ export const userMockList = [
         status: 'online',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -27,6 +69,27 @@ export const userMockList = [
         status: 'online',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -37,6 +100,27 @@ export const userMockList = [
         status: 'online',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -47,6 +131,27 @@ export const userMockList = [
         status: 'offline',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -57,6 +162,27 @@ export const userMockList = [
         status: 'offline',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -67,6 +193,27 @@ export const userMockList = [
         status: 'offline',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -77,6 +224,27 @@ export const userMockList = [
         status: 'offline',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
     { 
@@ -87,6 +255,27 @@ export const userMockList = [
         status: 'offline',
         conversations: [
             'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
         ]
     },
 ];

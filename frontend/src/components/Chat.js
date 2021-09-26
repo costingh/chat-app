@@ -55,6 +55,7 @@ function Chat() {
 
 	const [currentConversation, setCurrentConversation] = useState(null);
 	const [messages, setMessages] = useState([]);
+	const [contactForm, setContactForm] = useState(false);
 	
 	const ws = useRef(null);
 	const stomp = useRef(null);
@@ -91,6 +92,15 @@ function Chat() {
 		stomp.current.send(`/app/send/${currentConversation}`, {}, JSON.stringify(message));
 	}
 
+	const hideAddContactForm = () => {
+		setContactForm(false)
+	}
+
+	const showAddContactForm = () => {
+		setContactForm(true)
+	}
+					
+
     return (
 		<div className="home-page__content messages-page">
 			<div className="container-fluid h-100">
@@ -100,6 +110,8 @@ function Chat() {
 						setCurrentChatContact={setCurrentChatContact}
 						currentUser={CONNECTED_USER}
 						setCurrentConversation={setCurrentConversation}
+						hideAddContactForm={hideAddContactForm}
+						contactForm={contactForm}
 					/>
 					<ChatContent 
 						sendMessage={sendMessage}
@@ -110,6 +122,7 @@ function Chat() {
 					/>
 					<ChatInfos
 						currentChatContact={currentChatContact}
+						showAddContactForm={showAddContactForm}
 					/>
 				</div>
 			</div>

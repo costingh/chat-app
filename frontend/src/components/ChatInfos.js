@@ -1,6 +1,7 @@
 import React from 'react'
+import AddNewContact from './AddNewContact'
 
-function ChatInfos({currentChatContact}) {
+function ChatInfos({currentChatContact, showAddContactForm}) {
     return (
         <div className="col-12 col-md-5 col-lg-4 col-xl-3 px-4 px-sm-5 px-lg-4 user-profile">
             <div className="user-profile__close d-flex d-xl-none">
@@ -39,6 +40,7 @@ function ChatInfos({currentChatContact}) {
                         })}
                     </ul>
                 </div>
+                <AddNewContact showAddContactForm={showAddContactForm}/>
             </div>
         </div>
     )

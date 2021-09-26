@@ -868,3 +868,23 @@ body {
     }
   }
 }
+
+.add_contact__btn {
+  cursor: pointer;
+  width: 70%;
+  margin: 30px auto;
+  background: var(--search-form-bg-colour);
+  border-radius: 20px;
+  padding: 50px;
+  transition: all .3s ease;
+  & .svg-icon {
+    width: 102px;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+  &:hover {
+    background: var(--bg-page-darkest);
+  }
+}

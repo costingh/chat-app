@@ -1,5 +1,8 @@
 package com.web.chat.controllers;
 
+import com.web.chat.models.Message;
+import com.web.chat.payload.request.MessageRequest;
+import com.web.chat.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,9 +18,20 @@ public class WebSocketTextController {
     @Autowired
     SimpMessagingTemplate template;
 
+    @Autowired
+    MessageRepository messageRepository;
+
     @MessageMapping("/send/{conversationId}")
     @SendTo("/topic/{conversationId}")
-    public String sendMessage(@Payload String message) {
+    public MessageRequest sendMessage(@Payload MessageRequest message) {
+        Message newMessage = new Message(
+                message.getFrom(),
+                message.getTo(),
+                message.getBody()
+        );
+
+        messageRepository.save(newMessage);
+        
         return message;
     }
 }

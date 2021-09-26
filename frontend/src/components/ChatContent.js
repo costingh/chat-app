@@ -3,8 +3,12 @@ import React from 'react'
 function ChatContent({sendMessage}) {
 
     const send = () => {
-        sendMessage('Hello')
-        console.log('Message sent...')
+        const message = {
+            from: 'Lucas',
+            to: 'Alexa',
+            body: 'Hi, how are you?'
+        }
+        sendMessage(message)
     }
 
     return (

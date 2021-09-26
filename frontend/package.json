@@ -17,6 +17,8 @@
     "react-validation": "^3.0.7",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "sockjs-client": "^1.5.2",
+    "stompjs": "^2.3.3",
     "validator": "^13.1.1"
   },
   "scripts": {

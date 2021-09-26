@@ -13,39 +13,46 @@ import Stomp from 'stompjs';
 import { Redirect } from 'react-router-dom';
 // styles
 import '../styles/Chat.scss'
-
+// utils
+import {getQueryParam} from '../utils/utils'
 
 const SOCKET_URL = '/ws-message';
 
 function Chat() {
 	const { user: currentUser } = useSelector((state) => state.auth);
+	const [currentConversation, setCurrentConversation] = useState(null);
 
 	const ws = useRef(null);
 	const stomp = useRef(null);
 	
 	const chatId = 1234;
-	let messagesSubscription = null;
+	let messagesSubscriptions = [];
 
 	const [currentChatContact, setCurrentChatContact] = useState(null);
 
 	useEffect(() => {
 		ws.current = new SockJS(SOCKET_URL);
-		ws.current.onopen = () => alert("ws opened");
-		ws.current.onclose = () => alert(1000);
+			ws.current.onopen = () => alert("ws opened");
+			ws.current.onclose = () => alert(1000);
 
-		stomp.current = Stomp.over(ws.current);
-		stomp.current.reconnect_delay = 5000;
+			stomp.current = Stomp.over(ws.current);
+			stomp.current.reconnect_delay = 5000;
+
+			return () => {
+				ws.current.close();
+			};
+	}, [])
+
+	useEffect(() => {
 		stomp.current.connect({}, frame => {
-			messagesSubscription = stomp.current.subscribe(`/topic/${chatId}`, chatActions => {
+			let newMessagesSubscription = stomp.current.subscribe(`/topic/${currentConversation}`, chatActions => {
 				const response = JSON.parse(chatActions.body);
 				console.log(response)
 			});
-		});
 
-		return () => {
-			ws.current.close();
-		};
-	}, [])
+			messagesSubscriptions.push(newMessagesSubscription);
+		});
+	}, [currentConversation])
 
 	// Must come after useRef and useEffect !!
 	if (!currentUser) {
@@ -53,7 +60,7 @@ function Chat() {
 	}
 
 	const sendMessage = (message) => {
-		stomp.current.send(`/app/send/${chatId}`, {}, JSON.stringify(message));
+		stomp.current.send(`/app/send/${currentConversation}`, {}, JSON.stringify(message));
 	}
 
     return (
@@ -63,6 +70,8 @@ function Chat() {
 					<MessageList
 						currentChatContact={currentChatContact}
 						setCurrentChatContact={setCurrentChatContact}
+						currentUser={currentUser}
+						setCurrentConversation={setCurrentConversation}
 					/>
 					<ChatContent 
 						sendMessage={sendMessage}

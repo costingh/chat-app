@@ -4,6 +4,9 @@ import javax.validation.constraints.NotBlank;
 
 public class MessageRequest {
     @NotBlank
+    private String conversationId;
+
+    @NotBlank
     private String from;
 
     @NotBlank
@@ -34,5 +37,13 @@ public class MessageRequest {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 }

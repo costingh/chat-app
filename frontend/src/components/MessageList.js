@@ -1,9 +1,24 @@
 import React from 'react'
 import {userMockList} from '../mocks/userMock'
 
-function MessageList({currentChatContact, setCurrentChatContact}) {
+function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation}) {
+    const addQueryParam = (key, value) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set(key, value);
+        window.history.pushState({}, '', url.toString());
+    };
+
+    
+
     const changeActiveUser = (user) => {
-        setCurrentChatContact(user)
+        setCurrentChatContact(user);
+
+        // get id of conversation between currentChatContact.id and currentUser.id
+
+       /*  const currentConversationId = 'stppvuuidjkel123'; // example */
+       const currentConversationId = user.id;
+        setCurrentConversation(currentConversationId);
+        addQueryParam('conversation', currentConversationId);
     }
 
     return (

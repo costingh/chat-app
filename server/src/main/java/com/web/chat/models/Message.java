@@ -10,6 +10,7 @@ import java.util.Date;
 public class Message {
     @Id
     private String id;
+    private String conversationId;
     private String from;
     private String to;
     private String body;
@@ -19,7 +20,8 @@ public class Message {
     public Message() {
     }
 
-    public Message(String from, String to, String body) {
+    public Message(String conversationId, String from, String to, String body) {
+        this.conversationId = conversationId;
         this.from = from;
         this.to = to;
         this.body = body;
@@ -63,5 +65,13 @@ public class Message {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 }

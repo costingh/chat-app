@@ -25,6 +25,7 @@ public class WebSocketTextController {
     @SendTo("/topic/{conversationId}")
     public MessageRequest sendMessage(@Payload MessageRequest message) {
         Message newMessage = new Message(
+                message.getConversationId(),
                 message.getFrom(),
                 message.getTo(),
                 message.getBody()

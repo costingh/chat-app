@@ -1,16 +1,21 @@
 import React, {useRef} from 'react'
+import {getQueryParam} from '../utils/utils'
 
 function ChatContent({sendMessage, currentUser, currentChatContact}) {
     const messageRef = useRef();
 
     const send = () => {
         if(messageRef.current.value && currentChatContact) {
-            const message = {
-                from: currentUser.id,
-                to: currentChatContact.id,
-                body: messageRef.current.value
+            const conversationId = getQueryParam('conversation');
+            if(conversationId) {
+                const message = {
+                    conversationId: conversationId,
+                    from: currentUser.id,
+                    to: currentChatContact.id,
+                    body: messageRef.current.value
+                }
+                sendMessage(message)
             }
-            sendMessage(message)
         }
     }
 

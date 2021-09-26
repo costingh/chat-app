@@ -4,13 +4,12 @@ function ChatContent({sendMessage, currentUser, currentChatContact}) {
     const messageRef = useRef();
 
     const send = () => {
-        if(messageRef.current.value) {
+        if(messageRef.current.value && currentChatContact) {
             const message = {
-                from: currentUser.username,
-                to: currentChatContact.username,
+                from: currentUser.id,
+                to: currentChatContact.id,
                 body: messageRef.current.value
             }
-
             sendMessage(message)
         }
     }

@@ -24,7 +24,7 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
         <div className="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1">
             <div className="chat__container">
                 <div className="chat__wrapper py-2 pt-mb-2 pb-md-3">
-                    <div className={`chat__messaging ${currentChatContact && currentChatContact.status === 'online' && 'messaging-member--online '} pb-2 pb-md-2 pl-2 pl-md-4 pr-2`}>
+                    <div className={`chat__messaging ${currentUser && currentUser.status === 'online' && 'messaging-member--online '} pb-2 pb-md-2 pl-2 pl-md-4 pr-2`}>
                         <div className="chat__previous d-flex d-md-none">
                             <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon svg-icon--previous" viewBox="0 0 45.5 30.4">
                                 <path d="M43.5,13.1H7l9.7-9.6A2.1,2.1,0,1,0,13.8.6L.9,13.5h0L.3,14v.6c0,.1-.1.1-.1.2v.4a2,2,0,0,0,.6,1.5l.3.3L13.8,29.8a2.1,2.1,0,1,0,2.9-2.9L7,17.2H43.5a2,2,0,0,0,2-2A2.1,2.1,0,0,0,43.5,13.1Z" fill="#f68b3c" />
@@ -36,12 +36,12 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                         <div className="chat__infos pl-2 pl-md-0">
                             <div className="chat-member__wrapper" data-online="true">
                                 <div className="chat-member__avatar">
-                                    <img src={currentChatContact ? currentChatContact.profilePicture : './avatar_placeholder.png'} alt="Jenny Smith" loading="lazy"/>
+                                    <img src={currentUser ? currentUser?.profilePicture : './avatar_placeholder.png'} alt={currentUser && currentUser.username} loading="lazy"/>
                                     <div className="user-status user-status--large"></div>
                                 </div>
                                 <div className="chat-member__details">
-                                    <span className="chat-member__name">{currentChatContact ? currentChatContact.username : 'John Doe'}</span>
-                                    <span className="chat-member__status">{currentChatContact ? currentChatContact.status : 'Offline'}</span>
+                                    <span className="chat-member__name">{currentUser ? currentUser.username : 'John Doe'}</span>
+                                    <span className="chat-member__status">{currentUser ? currentUser?.status : 'Offline'}</span>
                                 </div>
                             </div>
                         </div>
@@ -73,13 +73,16 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                     <div className="chat__content pt-4 px-3">
                         {/* <div className="chat__time">Yesterday at 16:43</div> */}
                         <ul className="chat__list-messages">
-                            {messages.map((message, index) => (
-                                <li key={index}>
-                                    <div className={`chat__bubble ${message.from === currentUser.id ? 'chat__bubble--me' : 'chat__bubble--you'}`}>
-                                        {message.body}
-                                    </div>
-                                </li>
-                            ))}                          
+                            {currentChatContact 
+                                ? messages.map((message, index) => (
+                                    <li key={index}>
+                                        <div className={`chat__bubble ${message.from === currentUser.id ? 'chat__bubble--me' : 'chat__bubble--you'}`}>
+                                            {message.body}
+                                        </div>
+                                    </li>
+                                )) 
+                                : <p>Open a conversation</p>
+                            }               
                         </ul>
                     </div>
                     <div className="chat__send-container px-2 px-md-3 pt-1 pt-md-3">

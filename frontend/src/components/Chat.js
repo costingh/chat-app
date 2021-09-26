@@ -20,6 +20,39 @@ const SOCKET_URL = 'http://localhost:8080/ws-message';
 
 function Chat() {
 	const { user: currentUser } = useSelector((state) => state.auth);
+
+	const CONNECTED_USER = {
+		id: currentUser.id,
+        profilePicture: 'https://randomuser.me/api/portraits/thumb/men/2.jpg',
+        username: currentUser.username,
+        lastMessage: 'Yes, I need your help with the project, it need it done by tomorrow 😫',
+        status: 'online',
+        conversations: [
+            'stppvuuidjkel123'
+        ],
+        description: 'Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.',
+        socialMedias: [
+            {
+                name: 'Instagram',
+                link: '#'
+            },
+            {
+                name: 'Codepen',
+                link: '#'
+            },
+            {
+                name: 'Linkedin',
+                link: '#'
+            },
+        ],
+        activities: [
+            'Biking',
+            'Cooking',
+            'Travelling',
+            'Graphic Design'
+        ]
+	}
+
 	const [currentConversation, setCurrentConversation] = useState(null);
 	const [messages, setMessages] = useState([]);
 	
@@ -65,12 +98,12 @@ function Chat() {
 					<MessageList
 						currentChatContact={currentChatContact}
 						setCurrentChatContact={setCurrentChatContact}
-						currentUser={currentUser}
+						currentUser={CONNECTED_USER}
 						setCurrentConversation={setCurrentConversation}
 					/>
 					<ChatContent 
 						sendMessage={sendMessage}
-						currentUser={currentUser}
+						currentUser={CONNECTED_USER}
 						currentChatContact={currentChatContact}
 						messages={messages}
 						setMessages={setMessages}

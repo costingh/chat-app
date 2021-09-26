@@ -1,10 +1,26 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {userMockList} from '../mocks/userMock'
+import AuthService from "../services/auth.service"
 
 function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation, hideAddContactForm, contactForm}) {
     const inputRef = useRef();
 
     const [filteredList, setFilteredList] = useState([]);
+    const [allUsersList, setAllUsersList] = useState([]);
+
+    useEffect(() => {
+        if(contactForm) {
+            const resp = AuthService.getAllUsers();
+
+            resp
+                .then((users) => {
+                    setAllUsersList(users.data)
+                    setFilteredList(users.data)
+                })
+                .catch((err) => console.log(err))
+
+        }
+    }, [contactForm])
 
     const addQueryParam = (key, value) => {
         const url = new URL(window.location.href);
@@ -27,11 +43,11 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
 
     const handleInputChange = (event) => {
         if(contactForm && event.target.value !== '') {
-            const filteredUsers = userMockList.filter(user => user.username.toLowerCase().startsWith(event.target.value.toLowerCase()));
+            const filteredUsers = allUsersList.filter(user => user.username.toLowerCase().startsWith(event.target.value.toLowerCase()));
             setFilteredList(filteredUsers)
         }
 
-        if(event.target.value === '') setFilteredList([])
+        if(event.target.value === '') setFilteredList(allUsersList)
     }
 
     const addToContacts = (newContact) => {
@@ -95,7 +111,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                     >
                                         <div className="messaging-member__wrapper">
                                             <div className="messaging-member__avatar">
-                                                <img src={user.profilePicture} alt={user.username} loading="lazy"/>
+                                                <img src={user.profilePicture ? user.profilePicture : './avatar_placeholder.png'} alt={user.username} loading="lazy"/>
                                                 <div className="user-status"></div>
                                             </div>
                                             <span className="messaging-member__name">{user.username}</span>

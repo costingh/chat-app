@@ -25,7 +25,7 @@ function Chat() {
 		stomp.current = Stomp.over(ws.current);
 		stomp.current.reconnect_delay = 5000;
 		stomp.current.connect({}, frame => {
-			messagesSubscription = stomp.current.subscribe(`/topic/${chatId}/user`, chatActions => {
+			messagesSubscription = stomp.current.subscribe(`/topic/${chatId}`, chatActions => {
 				const response = JSON.parse(chatActions.body);
 				console.log(response)
 			});
@@ -45,7 +45,9 @@ function Chat() {
 			<div className="container-fluid h-100">
 				<div className="row px-0 h-100">
 					<MessageList/>
-					<ChatContent/>
+					<ChatContent 
+						sendMessage={sendMessage}
+					/>
 					<ChatInfos/>
 				</div>
 			</div>

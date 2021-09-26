@@ -7,7 +7,7 @@ import Chat from "./Chat";
 const BoardUser = () => {
   const [content, setContent] = useState("");
 
-  useEffect(() => {
+  /* useEffect(() => {
     UserService.getUserBoard().then(
       (response) => {
         setContent(response.data);
@@ -27,7 +27,7 @@ const BoardUser = () => {
         }
       }
     );
-  }, []);
+  }, []); */
 
   return (
       <Chat/>

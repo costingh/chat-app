@@ -2,8 +2,9 @@ import React from 'react'
 import {userMockList} from '../mocks/userMock'
 
 function MessageList({currentChatContact, setCurrentChatContact}) {
-    // if user is online add class messaging-member--online to messaging-member
-    // messaging-member--active
+    const changeActiveUser = (user) => {
+        setCurrentChatContact(user)
+    }
 
     return (
         <div className="col-12 col-md-4 col-lg-5 col-xl-3 px-0 messages-page__list-scroll">
@@ -28,15 +29,17 @@ function MessageList({currentChatContact, setCurrentChatContact}) {
             <ul className="messages-page__list pb-5 px-1 px-md-3">
                 {userMockList.map((userMock) => {
                     return  <li 
+                                key={userMock.id}
                                 className={`
                                     messaging-member messaging-member--new 
                                     ${userMock.status === 'online' 
                                         ? 'messaging-member--online' 
                                         : ''} 
                                     ${currentChatContact && 
-                                        currentChatContact.username === userMock.username 
+                                        currentChatContact.id === userMock.id 
                                             ? 'messaging-member--active' 
                                             : ''}`}
+                                onClick={() => changeActiveUser(userMock)}
                             >
                                 <div className="messaging-member__wrapper">
                                     <div className="messaging-member__avatar">

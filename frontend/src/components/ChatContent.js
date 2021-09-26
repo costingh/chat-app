@@ -1,20 +1,21 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {getQueryParam} from '../utils/utils'
 
-function ChatContent({sendMessage, currentUser, currentChatContact}) {
+function ChatContent({messages, setMessages, sendMessage, currentUser, currentChatContact}) {
     const messageRef = useRef();
-
+    
     const send = () => {
         if(messageRef.current.value && currentChatContact) {
             const conversationId = getQueryParam('conversation');
             if(conversationId) {
-                const message = {
+                const newMessage = {
                     conversationId: conversationId,
                     from: currentUser.id,
                     to: currentChatContact.id,
                     body: messageRef.current.value
                 }
-                sendMessage(message)
+                sendMessage(newMessage);
+                messageRef.current.value = '';
             }
         }
     }
@@ -23,7 +24,7 @@ function ChatContent({sendMessage, currentUser, currentChatContact}) {
         <div className="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1">
             <div className="chat__container">
                 <div className="chat__wrapper py-2 pt-mb-2 pb-md-3">
-                    <div className="chat__messaging messaging-member--online pb-2 pb-md-2 pl-2 pl-md-4 pr-2">
+                    <div className={`chat__messaging ${currentChatContact && currentChatContact.status === 'online' && 'messaging-member--online '} pb-2 pb-md-2 pl-2 pl-md-4 pr-2`}>
                         <div className="chat__previous d-flex d-md-none">
                             <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon svg-icon--previous" viewBox="0 0 45.5 30.4">
                                 <path d="M43.5,13.1H7l9.7-9.6A2.1,2.1,0,1,0,13.8.6L.9,13.5h0L.3,14v.6c0,.1-.1.1-.1.2v.4a2,2,0,0,0,.6,1.5l.3.3L13.8,29.8a2.1,2.1,0,1,0,2.9-2.9L7,17.2H43.5a2,2,0,0,0,2-2A2.1,2.1,0,0,0,43.5,13.1Z" fill="#f68b3c" />
@@ -35,12 +36,12 @@ function ChatContent({sendMessage, currentUser, currentChatContact}) {
                         <div className="chat__infos pl-2 pl-md-0">
                             <div className="chat-member__wrapper" data-online="true">
                                 <div className="chat-member__avatar">
-                                    <img src="https://randomuser.me/api/portraits/thumb/women/56.jpg" alt="Jenny Smith" loading="lazy"/>
+                                    <img src={currentChatContact ? currentChatContact.profilePicture : './avatar_placeholder.png'} alt="Jenny Smith" loading="lazy"/>
                                     <div className="user-status user-status--large"></div>
                                 </div>
                                 <div className="chat-member__details">
-                                    <span className="chat-member__name">Jenny Smith</span>
-                                    <span className="chat-member__status">Online</span>
+                                    <span className="chat-member__name">{currentChatContact ? currentChatContact.username : 'John Doe'}</span>
+                                    <span className="chat-member__status">{currentChatContact ? currentChatContact.status : 'Offline'}</span>
                                 </div>
                             </div>
                         </div>
@@ -70,57 +71,20 @@ function ChatContent({sendMessage, currentUser, currentChatContact}) {
                         </div>
                     </div>
                     <div className="chat__content pt-4 px-3">
+                        {/* <div className="chat__time">Yesterday at 16:43</div> */}
                         <ul className="chat__list-messages">
-                            <li>
-                                <div className="chat__time">Yesterday at 16:43</div>
-                                <div className="chat__bubble chat__bubble--you">
-                                    Hey, I bought something yesterdat but haven't gotten any confirmation. Do you know I if the order went through?
-                                </div>
-                            </li>
-                            <li>
-                                <div className="chat__bubble chat__bubble--me">
-                                    Hi! I just checked, your order went through and is on it's way home. Enjoy your new computer! 😃
-                                </div>
-                            </li>
-                            <li>
-                                <div className="chat__bubble chat__bubble--you">
-                                    Ohh thanks ! I was really worried about it !
-                                </div>
-                                <div className="chat__bubble chat__bubble--you">
-                                    Can't wait for it to be delivered
-                                </div>
-                            </li>
-                            <li>
-                                <div className="chat__time">07:14</div>
-                                <div className="chat__bubble chat__bubble--me">
-                                    Aenean iaculis massa non lorem dignissim volutpat. Praesent id faucibus lorem, a sagittis nunc. Duis facilisis lectus vel sapien ultricies, sed placerat augue elementum. In sagittis, justo nec sodales posuere, nunc est sagittis tellus, eget scelerisque dolor risus vel augue
-                                </div>
-                                <div className="chat__bubble chat__bubble--me">
-                                    Is everything alright?
-                                </div>
-                            </li>
-                            <li>
-                                <div className="chat__bubble chat__bubble--you">
-                                    Vestibulum finibus pulvinar quam, at tempus lorem. Pellentesque justo sapien, pulvinar sed magna et, vulputate commodo nisl. Aenean pharetra ornare turpis. Pellentesque viverra blandit ullamcorper. Mauris tincidunt ac lacus vel convallis. Vestibulum id nunc nec urna accumsan dapibus quis ullamcorper massa. Aliquam erat volutpat. Nam mollis mi et arcu dapibus condimentum.
-                                </div>
-                                <div className="chat__bubble chat__bubble--you">
-                                    Nulla facilisi. Duis laoreet dignissim lectus vel maximus
-                                </div>
-                                <div className="chat__bubble chat__bubble--you">
-                                    Curabitur volutpat, ipsum a condimentum hendrerit ! 😊
-                                </div>
-                            </li>
-                            <li>
-                                <div className="chat__time">09:26</div>
-                                <div className="chat__bubble chat__bubble--me">
-                                    Perfect, thanks !
-                                </div>
-                            </li>
+                            {messages.map((message, index) => (
+                                <li key={index}>
+                                    <div className={`chat__bubble ${message.from === currentUser.id ? 'chat__bubble--me' : 'chat__bubble--you'}`}>
+                                        {message.body}
+                                    </div>
+                                </li>
+                            ))}                          
                         </ul>
                     </div>
                     <div className="chat__send-container px-2 px-md-3 pt-1 pt-md-3">
                         <div className="custom-form__send-wrapper">
-                            <input type="text" className="form-control custom-form" id="message" placeholder="Ecrivez un message …" autoComplete="off" ref={messageRef}/>
+                            <input type="text" className="form-control custom-form" id="message" placeholder="Send a message …" autoComplete="off" ref={messageRef}/>
                             <div className="custom-form__send-img">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon svg-icon--send-img" viewBox="0 0 45.7 45.7">
                                     <path d="M6.6,45.7A6.7,6.7,0,0,1,0,39.1V6.6A6.7,6.7,0,0,1,6.6,0H39.1a6.7,6.7,0,0,1,6.6,6.6V39.1h0a6.7,6.7,0,0,1-6.6,6.6ZM39,4H6.6A2.6,2.6,0,0,0,4,6.6V39.1a2.6,2.6,0,0,0,2.6,2.6H39.1a2.6,2.6,0,0,0,2.6-2.6V6.6A2.7,2.7,0,0,0,39,4Zm4.7,35.1Zm-4.6-.4H6.6a2.1,2.1,0,0,1-1.8-1.1,2,2,0,0,1,.3-2.1l8.1-10.4a1.8,1.8,0,0,1,1.5-.8,2.4,2.4,0,0,1,1.6.7l4.2,5.1,6.6-8.5a1.8,1.8,0,0,1,1.6-.8,1.8,1.8,0,0,1,1.5.8L40.7,35.5a2,2,0,0,1,.1,2.1A1.8,1.8,0,0,1,39.1,38.7Zm-17.2-4H35.1l-6.5-8.6-6.5,8.4C22,34.6,22,34.7,21.9,34.7Zm-11.2,0H19l-4.2-5.1Z" fill="#f68b3c" />

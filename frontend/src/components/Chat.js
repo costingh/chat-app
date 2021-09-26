@@ -16,42 +16,37 @@ import '../styles/Chat.scss'
 // utils
 import {getQueryParam} from '../utils/utils'
 
-const SOCKET_URL = '/ws-message';
+const SOCKET_URL = 'http://localhost:8080/ws-message';
 
 function Chat() {
 	const { user: currentUser } = useSelector((state) => state.auth);
 	const [currentConversation, setCurrentConversation] = useState(null);
-
+	const [messages, setMessages] = useState([]);
+	
 	const ws = useRef(null);
 	const stomp = useRef(null);
 	
-	const chatId = 1234;
 	let messagesSubscriptions = [];
 
 	const [currentChatContact, setCurrentChatContact] = useState(null);
 
 	useEffect(() => {
-		ws.current = new SockJS(SOCKET_URL);
-			ws.current.onopen = () => alert("ws opened");
-			ws.current.onclose = () => alert(1000);
-
+			ws.current = new SockJS(SOCKET_URL);
 			stomp.current = Stomp.over(ws.current);
 			stomp.current.reconnect_delay = 5000;
+
+			stomp.current.connect({}, frame => {
+				let newMessagesSubscription = stomp.current.subscribe(`/topic/${currentConversation}`, chatActions => {
+					const newMessage = JSON.parse(chatActions.body);
+					setMessages(messages => [...messages, newMessage]);
+				});
+
+				messagesSubscriptions.push(newMessagesSubscription);
+			});
 
 			return () => {
 				ws.current.close();
 			};
-	}, [])
-
-	useEffect(() => {
-		stomp.current.connect({}, frame => {
-			let newMessagesSubscription = stomp.current.subscribe(`/topic/${currentConversation}`, chatActions => {
-				const response = JSON.parse(chatActions.body);
-				console.log(response)
-			});
-
-			messagesSubscriptions.push(newMessagesSubscription);
-		});
 	}, [currentConversation])
 
 	// Must come after useRef and useEffect !!
@@ -77,6 +72,8 @@ function Chat() {
 						sendMessage={sendMessage}
 						currentUser={currentUser}
 						currentChatContact={currentChatContact}
+						messages={messages}
+						setMessages={setMessages}
 					/>
 					<ChatInfos/>
 				</div>

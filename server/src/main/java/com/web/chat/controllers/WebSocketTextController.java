@@ -23,7 +23,7 @@ public class WebSocketTextController {
 
     @MessageMapping("/send/{conversationId}")
     @SendTo("/topic/{conversationId}")
-    public MessageRequest sendMessage(@Payload MessageRequest message) {
+    public Message sendMessage(@Payload MessageRequest message) {
         Message newMessage = new Message(
                 message.getConversationId(),
                 message.getFrom(),
@@ -32,7 +32,7 @@ public class WebSocketTextController {
         );
 
         messageRepository.save(newMessage);
-        
-        return message;
+
+        return newMessage;
     }
 }

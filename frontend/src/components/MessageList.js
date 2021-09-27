@@ -166,7 +166,15 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                             : contacts.map((contact, index) => {
                                 return  <li 
                                             key={index}
-                                            className={`messaging-member messaging-member--online`} // add  messaging-member--new if has new message
+                                            className={`
+                                                messaging-member 
+                                                ${contact?.status === 'online' 
+                                                    ? 'messaging-member--online' 
+                                                    : ''} 
+                                                ${currentChatContact && 
+                                                    currentChatContact.id === contact.id 
+                                                        ? 'messaging-member--active' 
+                                                        : ''}`} // add  messaging-member--new if has new message
                                             onClick={() => changeActiveUser(contact)}
                                         >
                                             <div className="messaging-member__wrapper">

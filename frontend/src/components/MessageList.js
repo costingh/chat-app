@@ -1,5 +1,4 @@
 import React, {useState, useRef, useEffect} from 'react'
-/* import {userMockList} from '../mocks/userMock' */
 import AuthService from "../services/auth.service"
 import ConversationsService from "../services/conversations.service"
 
@@ -10,8 +9,6 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
     const [allUsersList, setAllUsersList] = useState([]);
     const [conversations, setConversations] = useState([]);
     const [contacts, setContacts] = useState([]);
-
-    /* const [filteredConversations, setFilteredConversations] = useState([]); */
 
     useEffect(() => {
         ConversationsService.getAUserConversations(currentUser.id)
@@ -38,8 +35,6 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
 
     const changeActiveUser = (user) => {
         setCurrentChatContact(user);
-        // get id of conversation between currentChatContact.id and currentUser.id
-       /*  const currentConversationId = 'stppvuuidjkel123'; // example */
         const currentConversationId = user.conversationId;
         setCurrentConversation(currentConversationId);
         addQueryParam('conversation', currentConversationId);

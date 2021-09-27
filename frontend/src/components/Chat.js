@@ -119,6 +119,7 @@ function Chat() {
 						currentChatContact={currentChatContact}
 						messages={messages}
 						setMessages={setMessages}
+						currentConversation={currentConversation}
 					/>
 					<ChatInfos
 						currentChatContact={currentChatContact}

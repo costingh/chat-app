@@ -1,8 +1,17 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import {getQueryParam} from '../utils/utils'
+import MessagesService from '../services/messages.service'
 
-function ChatContent({messages, setMessages, sendMessage, currentUser, currentChatContact}) {
+function ChatContent({messages, setMessages, sendMessage, currentUser, currentChatContact, currentConversation}) {
     const messageRef = useRef();
+    /* const [messages, setMessages] = useState([]); */
+
+    useEffect(() => {
+        // get all messages from this conversation : currentConversation
+        MessagesService.getAllMessagesFromConversation(currentConversation)
+            .then((resp) => setMessages(resp.data))
+            .catch((err) => console.log(err))
+    }, [currentConversation])
     
     const send = () => {
         if(messageRef.current.value && currentChatContact) {

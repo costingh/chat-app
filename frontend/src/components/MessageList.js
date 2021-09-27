@@ -54,7 +54,13 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
     }
 
     const addToContacts = (newContact) => {
-        if(currentUser.id && newContact.id) {
+
+        const found = contacts.find(contact => contact.id === newContact.id);
+        if(found) {
+            alert('Contact already exists!');
+            return;
+        }
+        else {
             const newConversation = {
                 participantOneId: currentUser.id,
                 participantTwoId: newContact.id
@@ -66,8 +72,6 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
     
             hideAddContactForm()
             inputRef.current.value = ''
-        } else {
-            console.log('Error! Could not add contact...')
         }
     }
 

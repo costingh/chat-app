@@ -13,7 +13,6 @@ public class Conversations  implements Persistable<String>  {
     private String id;
     private String participantOneId;
     private String participantTwoId;
-    @CreatedDate
     private Date createdDate;
 
     public Conversations() {
@@ -47,5 +46,13 @@ public class Conversations  implements Persistable<String>  {
 
     public void setParticipantTwoId(String participantTwoId) {
         this.participantTwoId = participantTwoId;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

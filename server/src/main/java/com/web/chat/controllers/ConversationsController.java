@@ -32,12 +32,14 @@ public class ConversationsController {
 
     @PostMapping("/add")
     public Conversations addConversation(@RequestBody ConversationRequest conversation) {
-        Conversations conversations = new Conversations(
-                conversation.getParticipantOneId(),
-                conversation.getParticipantTwoId()
-        );
-
+//        Conversations conversations = new Conversations(
+//                conversation.getParticipantOneId(),
+//                conversation.getParticipantTwoId()
+//        );
         Date createdAt = new Date();
+        Conversations conversations = new Conversations();
+        conversations.setParticipantOneId(conversation.getParticipantOneId());
+        conversations.setParticipantTwoId(conversation.getParticipantTwoId());
         conversations.setCreatedDate(createdAt);
 
         conversationRepository.save(conversations);

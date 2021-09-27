@@ -34,9 +34,14 @@ const getAllUsers = () => {
   return axios.get(API_URL + "all", { headers: authHeader() });
 };
 
+const getUser = (userId) => {
+  return axios.get(API_URL + `user/${userId}`, { headers: authHeader() });
+};
+
 export default {
   register,
   login,
   logout,
-  getAllUsers
+  getAllUsers,
+  getUser
 };

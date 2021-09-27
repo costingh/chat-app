@@ -14,7 +14,7 @@ function ChatInfos({currentChatContact, showAddContactForm}) {
             </div>
             <div className="user-profile__wrapper">
                 <div className="user-profile__avatar">
-                    <img src={currentChatContact ? currentChatContact.profilePicture : './avatar_placeholder.png'} alt={currentChatContact ? currentChatContact.username : 'image'} loading="lazy"/>
+                    <img src={currentChatContact && currentChatContact.profilePicture ? currentChatContact.profilePicture : './avatar_placeholder.png'} alt={currentChatContact ? currentChatContact.username : 'image'} loading="lazy"/>
                 </div>
                 <div className="user-profile__details mt-1">
                     <span className="user-profile__name">{currentChatContact ? currentChatContact.username : 'John Doe'}</span>
@@ -27,15 +27,19 @@ function ChatInfos({currentChatContact, showAddContactForm}) {
                 <div className="user-profile__learning mt-4">
                     <span className="user-profile__label">Social Medias</span>
                     <ul className="user-profile__tags user-profile__tags--primary mt-2">
-                        {currentChatContact && currentChatContact.socialMedias.map(social => {
-                            return <li key={social.name}><a href={social.link} target="_blank">{social.name}</a></li>
-                        })}
+                        {currentChatContact 
+                            && currentChatContact.socialMedias 
+                                ? currentChatContact.socialMedias.map(social => {
+                                    return <li key={social.name}><a href={social.link} target="_blank">{social.name}</a></li>
+                                })
+                                : <li><a href='' target="_blank">No social media added :(</a></li>
+                        }
                     </ul>
                 </div>
                 <div className="user-profile__hobbies">
                     <span className="user-profile__label">Activities</span>
                     <ul className="user-profile__tags user-profile__tags--secondary mt-2">
-                        {currentChatContact && currentChatContact.activities.map((activity, index) => {
+                        {currentChatContact && currentChatContact.activities?.map((activity, index) => {
                             return <li key={index}>{activity}</li>
                         })}
                     </ul>

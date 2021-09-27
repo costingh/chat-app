@@ -1,24 +1,32 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {userMockList} from '../mocks/userMock'
+/* import {userMockList} from '../mocks/userMock' */
 import AuthService from "../services/auth.service"
+import ConversationsService from "../services/conversations.service"
 
 function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation, hideAddContactForm, contactForm}) {
     const inputRef = useRef();
 
     const [filteredList, setFilteredList] = useState([]);
     const [allUsersList, setAllUsersList] = useState([]);
+    const [conversations, setConversations] = useState([]);
+    const [contacts, setContacts] = useState([]);
+
+    /* const [filteredConversations, setFilteredConversations] = useState([]); */
+
+    useEffect(() => {
+        ConversationsService.getAUserConversations(currentUser.id)
+        .then((resp) => {setConversations(resp.data)})
+        .catch((err) => console.log(err))
+    }, [])
 
     useEffect(() => {
         if(contactForm) {
-            const resp = AuthService.getAllUsers();
-
-            resp
+            AuthService.getAllUsers()
                 .then((users) => {
                     setAllUsersList(users.data)
                     setFilteredList(users.data)
                 })
                 .catch((err) => console.log(err))
-
         }
     }, [contactForm])
 
@@ -28,15 +36,11 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
         window.history.pushState({}, '', url.toString());
     };
 
-    
-
     const changeActiveUser = (user) => {
         setCurrentChatContact(user);
-
         // get id of conversation between currentChatContact.id and currentUser.id
-
        /*  const currentConversationId = 'stppvuuidjkel123'; // example */
-       const currentConversationId = user.id;
+        const currentConversationId = user.conversationId;
         setCurrentConversation(currentConversationId);
         addQueryParam('conversation', currentConversationId);
     }
@@ -46,15 +50,53 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
             const filteredUsers = allUsersList.filter(user => user.username.toLowerCase().startsWith(event.target.value.toLowerCase()));
             setFilteredList(filteredUsers)
         }
-
         if(event.target.value === '') setFilteredList(allUsersList)
     }
 
     const addToContacts = (newContact) => {
-        console.log('Contact added successfully')
-        hideAddContactForm()
-        inputRef.current.value = ''
+        if(currentUser.id && newContact.id) {
+            const newConversation = {
+                participantOneId: currentUser.id,
+                participantTwoId: newContact.id
+            };
+
+            ConversationsService.createConversation(newConversation)
+                .then((resp) => setContacts(contacts => [...contacts, resp.data]))
+                .catch((err) => console.log(err))
+    
+            hideAddContactForm()
+            inputRef.current.value = ''
+        } else {
+            console.log('Error! Could not add contact...')
+        }
     }
+
+    useEffect(() => {
+        if(conversations.length !== 0) {
+            const allContacts = [];
+            conversations.map((conv) => {
+                if(conv.participantOneId !== currentUser.id) {
+                    AuthService.getUser(conv.participantOneId)
+                    .then((response) => { allContacts.push({
+                        ...response.data,
+                        conversationId: conv.id
+                    }) })
+                    .catch((err) => console.log(err))
+                } else {
+                    AuthService.getUser(conv.participantTwoId)
+                    .then((response) => { allContacts.push({
+                        ...response.data,
+                        conversationId: conv.id
+                    }) })
+                    .catch((err) => console.log(err))
+                }
+            })
+
+            setTimeout(() => {
+                setContacts(allContacts);
+            }, 1000)            
+        }
+    }, [conversations])
 
 
     return (
@@ -119,30 +161,46 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                         </div>
                                     </li>
                         })
-                        : userMockList.map((userMock) => {
-                            return  <li 
-                                        key={userMock.id}
-                                        className={`
-                                            messaging-member messaging-member--new 
-                                            ${userMock.status === 'online' 
-                                                ? 'messaging-member--online' 
-                                                : ''} 
-                                            ${currentChatContact && 
-                                                currentChatContact.id === userMock.id 
-                                                    ? 'messaging-member--active' 
-                                                    : ''}`}
-                                        onClick={() => changeActiveUser(userMock)}
-                                    >
-                                        <div className="messaging-member__wrapper">
-                                            <div className="messaging-member__avatar">
-                                                <img src={userMock.profilePicture} alt={userMock.username} loading="lazy"/>
-                                                <div className="user-status"></div>
+                        : contacts.length === 0
+                            ? <div>No conversations yet...</div>
+                            : contacts.map((contact, index) => {
+                                return  <li 
+                                            key={index}
+                                            className={`messaging-member messaging-member--online`} // add  messaging-member--new if has new message
+                                            onClick={() => changeActiveUser(contact)}
+                                        >
+                                            <div className="messaging-member__wrapper">
+                                                <div className="messaging-member__avatar">
+                                                    <img src={contact.profilePicture ? contact.profilePicture : './avatar_placeholder.png'} alt={contact.username} loading="lazy"/>
+                                                    <div className="user-status"></div>
+                                                </div>
+                                                <span className="messaging-member__name">{contact.username}</span>
+                                                <span className="messaging-member__message">Last message</span>
                                             </div>
-                                            <span className="messaging-member__name">{userMock.username}</span>
-                                            <span className="messaging-member__message">{userMock.lastMessage}</span>
-                                        </div>
-                                    </li>
-                        })
+                                        </li>
+                               {/*  return  <li 
+                                            key={index}
+                                            className={`
+                                                messaging-member messaging-member--new 
+                                                ${contact.status === 'online' 
+                                                    ? 'messaging-member--online' 
+                                                    : ''} 
+                                                ${currentChatContact && 
+                                                    currentChatContact.id === contact.id 
+                                                        ? 'messaging-member--active' 
+                                                        : ''}`}
+                                            onClick={() => changeActiveUser(contact)}
+                                        >
+                                            <div className="messaging-member__wrapper">
+                                                <div className="messaging-member__avatar">
+                                                    <img src={contact.profilePicture} alt={contact.username} loading="lazy"/>
+                                                    <div className="user-status"></div>
+                                                </div>
+                                                <span className="messaging-member__name">{contact.username}</span>
+                                                <span className="messaging-member__message">{contact.lastMessage}</span>
+                                            </div>
+                                        </li> */}
+                            })
                 }
             </ul>
         </div>

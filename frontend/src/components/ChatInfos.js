@@ -2,9 +2,18 @@ import React from 'react'
 import AddNewContact from './AddNewContact'
 
 function ChatInfos({currentChatContact, showAddContactForm}) {
+
+    const closeUserProfile = () => {
+        const chat = document.querySelector('.chat');
+        chat.classList.remove('chat--mobile');
+
+        const profile = document.querySelector('.user-profile');
+        profile.classList.remove('user-profile--show');
+    }
+
     return (
         <div className="col-12 col-md-5 col-lg-4 col-xl-3 px-4 px-sm-5 px-lg-4 user-profile">
-            <div className="user-profile__close d-flex d-xl-none">
+            <div className="user-profile__close d-flex d-xl-none" onClick={closeUserProfile}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon" viewBox="0 0 38.8 38.9">
                     <g>
                         <path d="M2,38.9a1.9,1.9,0,0,1-1.4-.5,2.1,2.1,0,0,1,0-2.9L35.4.6a1.9,1.9,0,0,1,2.8,0,1.9,1.9,0,0,1,0,2.8L3.4,38.4A1.9,1.9,0,0,1,2,38.9Z" fill="#d87232" />

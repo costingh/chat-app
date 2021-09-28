@@ -29,12 +29,27 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
         }
     }
 
+    const showChatDetails = () => {
+        const profile = document.querySelector('.user-profile');
+        const body = document.querySelector('body');
+        if(body.clientWidth <= 1199) {
+            profile.classList.add('user-profile--large');
+            profile.classList.add('user-profile--show');
+        }
+        console.log(profile)
+    }
+
+    const chatPrevious = () => {
+        const chat = document.querySelector('.chat');
+		chat.classList.remove('chat--show');
+    }
+
     return (
         <div className="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1">
             <div className="chat__container">
                 <div className="chat__wrapper py-2 pt-mb-2 pb-md-3">
                     <div className={`chat__messaging ${currentUser && currentUser.status === 'online' && 'messaging-member--online '} pb-2 pb-md-2 pl-2 pl-md-4 pr-2`}>
-                        <div className="chat__previous d-flex d-md-none">
+                        <div className="chat__previous d-flex d-md-none" onClick={chatPrevious}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon svg-icon--previous" viewBox="0 0 45.5 30.4">
                                 <path d="M43.5,13.1H7l9.7-9.6A2.1,2.1,0,1,0,13.8.6L.9,13.5h0L.3,14v.6c0,.1-.1.1-.1.2v.4a2,2,0,0,0,.6,1.5l.3.3L13.8,29.8a2.1,2.1,0,1,0,2.9-2.9L7,17.2H43.5a2,2,0,0,0,2-2A2.1,2.1,0,0,0,43.5,13.1Z" fill="#f68b3c" />
                             </svg>
@@ -67,7 +82,7 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                                         <path d="M36.6,20.4A10.2,10.2,0,1,1,46.8,10.2,10.2,10.2,0,0,1,36.6,20.4ZM36.6,4a6.2,6.2,0,1,0,6.2,6.2A6.2,6.2,0,0,0,36.6,4Z" fill="#f68b3c" />
                                     </svg>
                                 </li>
-                                <li className="chat__details d-flex d-xl-none">
+                                <li className="chat__details d-flex d-xl-none" onClick={showChatDetails}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon" viewBox="0 0 42.2 11.1">
                                         <g>
                                             <circle cx="5.6" cy="5.6" r="5.6" fill="#d87232" />

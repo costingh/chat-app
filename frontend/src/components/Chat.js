@@ -65,6 +65,15 @@ function Chat() {
 	const [currentChatContact, setCurrentChatContact] = useState(null);
 
 	useEffect(() => {
+		const smallDevice = window.matchMedia("(max-width: 767px)");
+		const largeScreen = window.matchMedia("(max-width: 1199px)");
+
+		smallDevice.addEventListener("change", handleDeviceChange);
+		largeScreen.addEventListener("change", handleLargeScreenChange);
+
+	}, [])
+
+	useEffect(() => {
 			ws.current = new SockJS(SOCKET_URL);
 			stomp.current = Stomp.over(ws.current);
 			stomp.current.reconnect_delay = 5000;
@@ -100,6 +109,59 @@ function Chat() {
 		setContactForm(true)
 	}
 					
+	const handleDeviceChange = e => {
+		if (e.matches) chatMobile();
+		else chatDesktop();
+	}
+
+	const handleLargeScreenChange = e => {
+		if (e.matches) profileToogleOnLarge();
+		else profileExtraLarge();
+	}
+
+	const chatMobile = () => {
+		const chat = document.querySelector('.chat');
+		chat.classList.add('chat--mobile');
+	}
+
+	const chatDesktop = () => {
+		const chat = document.querySelector('.chat');
+		chat.classList.remove('chat--mobile');
+	}
+
+	const profileToogleOnLarge = () => {
+		const profile = document.querySelector('.user-profile');
+		profile.classList.add('user-profile--large');
+	}
+
+	const profileExtraLarge = () => {
+		const profile = document.querySelector('.user-profile');
+		profile.classList.remove('user-profile--large');
+	}
+
+/* 
+$(".messaging-member").click(function () {
+  $chat.fadeIn();
+  $chat.addClass("chat--show");
+});
+
+$(".chat__previous").click(function () {
+  $chat.removeClass("chat--show");
+});
+
+$(".chat__details").click(function () {
+  $profile.fadeIn();
+  $profile.addClass("user-profile--show");
+});
+
+$(".user-profile__close").click(function () {
+  $profile.removeClass("user-profile--show");
+});
+
+$(".messages-page__dark-mode-toogler").click(function () {
+  $("body").toggleClass("dark-mode");
+}); */
+
 
     return (
 		<div className="home-page__content messages-page">

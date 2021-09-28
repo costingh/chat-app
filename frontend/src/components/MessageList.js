@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react'
 import AuthService from "../services/auth.service"
 import ConversationsService from "../services/conversations.service"
+import MessagesService from '../services/messages.service';
 
 function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation, hideAddContactForm, contactForm}) {
     const inputRef = useRef();
@@ -81,19 +82,41 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
             const allContacts = [];
             conversations.map((conv) => {
                 if(conv.participantOneId !== currentUser.id) {
+                    let contact;
                     AuthService.getUser(conv.participantOneId)
-                    .then((response) => { allContacts.push({
-                        ...response.data,
-                        conversationId: conv.id
-                    }) })
-                    .catch((err) => console.log(err))
+                        .then((response) => { 
+                            MessagesService.getLastMessageFromConversation(conv.id)
+                                .then((res) => { 
+                                    let lastMessage = res.data;
+                                    contact = {
+                                        ...response.data,
+                                        conversationId: conv.id,
+                                        lastMessage: lastMessage
+                                    } 
+                                    console.log(contact)
+                                    allContacts.push(contact) 
+                                })
+                                .catch((err) => console.log(err))
+                        })
+                        .catch((err) => console.log(err))
                 } else {
+                    let contact;
                     AuthService.getUser(conv.participantTwoId)
-                    .then((response) => { allContacts.push({
-                        ...response.data,
-                        conversationId: conv.id
-                    }) })
-                    .catch((err) => console.log(err))
+                        .then((response) => { 
+                            MessagesService.getLastMessageFromConversation(conv.id)
+                                .then((res) => { 
+                                    let lastMessage = res.data;
+                                    contact = {
+                                        ...response.data,
+                                        conversationId: conv.id,
+                                        lastMessage: lastMessage
+                                    } 
+                                    console.log(contact)
+                                    allContacts.push(contact) 
+                                })
+                                .catch((err) => console.log(err))
+                        })
+                        .catch((err) => console.log(err))
                 }
             })
 
@@ -198,7 +221,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                                     <div className="user-status"></div>
                                                 </div>
                                                 <span className="messaging-member__name">{contact.username}</span>
-                                                <span className="messaging-member__message">Last message</span>
+                                                <span className="messaging-member__message">{contact?.lastMessage.body}</span>
                                             </div>
                                         </li>
                                {/*  return  <li 

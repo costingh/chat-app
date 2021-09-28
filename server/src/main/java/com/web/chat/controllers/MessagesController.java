@@ -1,6 +1,7 @@
 package com.web.chat.controllers;
 
 import com.web.chat.models.Message;
+import com.web.chat.repository.ConversationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,6 +16,9 @@ import java.util.List;
 public class MessagesController {
 
     @Autowired
+    private ConversationRepository conversationRepository;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     @GetMapping("/all-messages/{conversationId}")
@@ -23,6 +27,14 @@ public class MessagesController {
         query.addCriteria(Criteria.where("conversationId").is(conversationId));
         List<Message> messages = mongoTemplate.find(query, Message.class);
         return messages;
+    }
+
+    @GetMapping("/last-message/{conversationId}")
+    public Message lastMessageFromConversation(@PathVariable String conversationId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("conversationId").is(conversationId));
+        List<Message> messages = mongoTemplate.find(query, Message.class);
+        return messages.get(messages.size()-1);
     }
 }
 

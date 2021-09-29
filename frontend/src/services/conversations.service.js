@@ -15,6 +15,10 @@ const getAllConversations = () => {
   return axios.get(API_URL + 'all', { headers: authHeader() });
 };
 
+const getConversation = (conversationId) => {
+  return axios.get(API_URL + `${conversationId}`, { headers: authHeader() });
+};
+
 const deleteConversation = (conversationId) => {
   return axios.delete(API_URL + `delete/${conversationId}`, { headers: authHeader() });
 };
@@ -23,5 +27,6 @@ export default {
     createConversation,
     getAUserConversations,
     getAllConversations,
+    getConversation,
     deleteConversation
 };

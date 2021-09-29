@@ -14,9 +14,12 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
+        console.log(contacts)
+    }, [contacts])
+    useEffect(() => {
         ConversationsService.getAUserConversations(currentUser.id)
-        .then((resp) => {setConversations(resp.data)})
-        .catch((err) => console.log(err))
+            .then((resp) => {setConversations(resp.data)})
+            .catch((err) => console.log(err))
     }, [])
 
     useEffect(() => {
@@ -66,11 +69,23 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                 participantTwoId: newContact.id
             };
 
+            // create a new conversation
+            // this request retrieves an object with fields: id, participantOneId, participantTwoId, createdAt
             ConversationsService.createConversation(newConversation)
-                .then((resp) => {
-                    UserService.getUser(resp.data.participantTwoId)
-                    .then((resp) => setContacts(contacts => [...contacts, resp.data])) 
-                    .catch((err) => console.log(err))
+                .then((newConversation) => {
+                    // get the new contact user, to be displayed in messageList component
+                    // thi user id is participantTwoId
+                    UserService.getUser(newConversation.data.participantTwoId)
+                        .then((user) => {
+                            // add the conversationId field to the new user
+                            // then add it to state (no need to refresh the page to display new added contact)
+                            const newContact = {
+                                conversationId: newConversation.data.id,
+                                ...user.data
+                            }
+                            setContacts(contacts => [...contacts, newContact])
+                        }) 
+                        .catch((err) => console.log(err))
                 }) 
                 .catch((err) => console.log(err))
     

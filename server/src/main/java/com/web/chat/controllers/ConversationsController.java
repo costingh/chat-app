@@ -34,10 +34,6 @@ public class ConversationsController {
 
     @PostMapping("/add")
     public Conversations addConversation(@RequestBody ConversationRequest conversation) {
-//        Conversations conversations = new Conversations(
-//                conversation.getParticipantOneId(),
-//                conversation.getParticipantTwoId()
-//        );
         Date createdAt = new Date();
         Conversations conversations = new Conversations();
         conversations.setParticipantOneId(conversation.getParticipantOneId());
@@ -49,7 +45,7 @@ public class ConversationsController {
     }
 
     @GetMapping("/all/{userId}")
-    public List<Conversations> addConversation(@PathVariable String userId) {
+    public List<Conversations> allUserConversations(@PathVariable String userId) {
         Query query = new Query();
         List<Criteria> criteria = new ArrayList<>();
 

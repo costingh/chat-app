@@ -61,6 +61,10 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
         window.addEventListener('resize', handleResize)
     })
 
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+    }
+
     return (
         <div className="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1" style={{display: 'block'}}>
             <div className="chat__container">
@@ -127,7 +131,7 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                         </ul>
                     </div>
                     <div className="chat__send-container px-2 px-md-3 pt-1 pt-md-3">
-                        <div className="custom-form__send-wrapper">
+                        <form className="custom-form__send-wrapper" onSubmit={handleFormSubmit}>
                             <input type="text" className="form-control custom-form" id="message" placeholder="Send a message …" autoComplete="off" ref={messageRef}/>
                             <div className="custom-form__send-img">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon svg-icon--send-img" viewBox="0 0 45.7 45.7">
@@ -147,7 +151,7 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                                     </g>
                                 </svg>
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

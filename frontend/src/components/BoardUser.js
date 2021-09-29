@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import UserService from "../services/user.service";
-import EventBus from "../common/EventBus";
+/* import UserService from "../services/user.service";
+import EventBus from "../common/EventBus"; */
 import Chat from "./Chat";
 
 const BoardUser = () => {
@@ -35,11 +35,3 @@ const BoardUser = () => {
   };
   
   export default BoardUser;
-  
-  {/* <div className="container">
-    <header className="jumbotron">
-      <h3>{content}</h3>
-
-      
-    </header>
-  </div> */}

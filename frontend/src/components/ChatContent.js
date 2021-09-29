@@ -2,10 +2,8 @@ import React, {useRef, useState, useEffect} from 'react'
 import {getQueryParam} from '../utils/utils'
 import MessagesService from '../services/messages.service'
 
-
 function ChatContent({messages, setMessages, sendMessage, currentUser, currentChatContact, currentConversation}) {
     const messageRef = useRef();
-    /* const [messages, setMessages] = useState([]); */
 
     useEffect(() => {
         // get all messages from this conversation : currentConversation
@@ -32,8 +30,6 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
 
     const showChatDetails = () => {
         const profile = document.querySelector('.user-profile');
-        /* const chat = document.querySelector('.chat');
-        chat.classList.add('chat--show') */
         const body = document.querySelector('body');
         if(body.clientWidth <= 1199) {
             profile.classList.add('user-profile--large');

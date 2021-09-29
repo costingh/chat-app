@@ -64,15 +64,6 @@ function Chat() {
 
 	const [currentChatContact, setCurrentChatContact] = useState(null);
 
-	/* useEffect(() => {
-		const smallDevice = window.matchMedia("(max-width: 767px)");
-		const largeScreen = window.matchMedia("(max-width: 1199px)");
-
-		smallDevice.addEventListener("change", handleDeviceChange);
-		largeScreen.addEventListener("change", handleLargeScreenChange);
-
-	}, []) */
-
 	useEffect(() => {
 			ws.current = new SockJS(SOCKET_URL);
 			stomp.current = Stomp.over(ws.current);

@@ -2,8 +2,10 @@ import React, {useState, useRef, useEffect} from 'react'
 import AuthService from "../services/auth.service"
 import ConversationsService from "../services/conversations.service"
 import MessagesService from '../services/messages.service';
+import UserService from '../services/auth.service';
+import AddNewContact from './AddNewContact';
 
-function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation, hideAddContactForm, contactForm}) {
+function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation, hideAddContactForm, contactForm, showAddContactForm}) {
     const inputRef = useRef();
 
     const [filteredList, setFilteredList] = useState([]);
@@ -36,11 +38,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
 
     const changeActiveUser = (user) => {
         const chat = document.querySelector('.chat');
-        const body = document.querySelector('body');
-        if(body.clientWidth <= 767) {
-            chat.classList.add('chat--show');
-            chat.classList.add('chat--mobile');
-        }
+        chat.classList.add('chat--show')
 
         setCurrentChatContact(user);
         const currentConversationId = user.conversationId;
@@ -69,7 +67,11 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
             };
 
             ConversationsService.createConversation(newConversation)
-                .then((resp) => setContacts(contacts => [...contacts, resp.data]))
+                .then((resp) => {
+                    UserService.getUser(resp.data.participantTwoId)
+                    .then((resp) => setContacts(contacts => [...contacts, resp.data])) 
+                    .catch((err) => console.log(err))
+                }) 
                 .catch((err) => console.log(err))
     
             hideAddContactForm()
@@ -93,7 +95,6 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                         conversationId: conv.id,
                                         lastMessage: lastMessage
                                     } 
-                                    console.log(contact)
                                     allContacts.push(contact) 
                                 })
                                 .catch((err) => console.log(err))
@@ -111,7 +112,6 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                         conversationId: conv.id,
                                         lastMessage: lastMessage
                                     } 
-                                    console.log(contact)
                                     allContacts.push(contact) 
                                 })
                                 .catch((err) => console.log(err))
@@ -200,7 +200,10 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                     </li>
                         })
                         : contacts.length === 0
-                            ? <div>No conversations yet...</div>
+                            ? <div>
+                                <div style={{marginTop: '10px', textAlign: 'center'}}>No conversations yet...</div>
+                                <AddNewContact showAddContactForm={showAddContactForm}/>
+                            </div>
                             : contacts.map((contact, index) => {
                                 return  <li 
                                             key={index}

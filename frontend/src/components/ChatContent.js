@@ -2,6 +2,7 @@ import React, {useRef, useState, useEffect} from 'react'
 import {getQueryParam} from '../utils/utils'
 import MessagesService from '../services/messages.service'
 
+
 function ChatContent({messages, setMessages, sendMessage, currentUser, currentChatContact, currentConversation}) {
     const messageRef = useRef();
     /* const [messages, setMessages] = useState([]); */
@@ -31,12 +32,13 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
 
     const showChatDetails = () => {
         const profile = document.querySelector('.user-profile');
+        /* const chat = document.querySelector('.chat');
+        chat.classList.add('chat--show') */
         const body = document.querySelector('body');
         if(body.clientWidth <= 1199) {
             profile.classList.add('user-profile--large');
             profile.classList.add('user-profile--show');
         }
-        console.log(profile)
     }
 
     const chatPrevious = () => {
@@ -44,11 +46,26 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
 		chat.classList.remove('chat--show');
     }
 
+    useEffect(() => {
+        const chat = document.querySelector('.chat');
+        if(window.innerWidth <= 764) chat.classList.add('chat--mobile'); 
+        else chat.classList.remove('chat--mobile');
+    }, [])
+
+    useEffect(() => {
+        const handleResize = () => {
+            const chat = document.querySelector('.chat');
+            if(window.innerWidth <= 764) chat.classList.add('chat--mobile'); 
+            else chat.classList.remove('chat--mobile');
+        }
+        window.addEventListener('resize', handleResize)
+    })
+
     return (
-        <div className="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1">
+        <div className="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1" style={{display: 'block'}}>
             <div className="chat__container">
                 <div className="chat__wrapper py-2 pt-mb-2 pb-md-3">
-                    <div className={`chat__messaging ${currentUser && currentUser.status === 'online' && 'messaging-member--online '} pb-2 pb-md-2 pl-2 pl-md-4 pr-2`}>
+                    <div className={`chat__messaging ${currentChatContact && currentChatContact?.status === 'online' && 'messaging-member--online '} pb-2 pb-md-2 pl-2 pl-md-4 pr-2`}>
                         <div className="chat__previous d-flex d-md-none" onClick={chatPrevious}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon svg-icon--previous" viewBox="0 0 45.5 30.4">
                                 <path d="M43.5,13.1H7l9.7-9.6A2.1,2.1,0,1,0,13.8.6L.9,13.5h0L.3,14v.6c0,.1-.1.1-.1.2v.4a2,2,0,0,0,.6,1.5l.3.3L13.8,29.8a2.1,2.1,0,1,0,2.9-2.9L7,17.2H43.5a2,2,0,0,0,2-2A2.1,2.1,0,0,0,43.5,13.1Z" fill="#f68b3c" />
@@ -60,12 +77,12 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                         <div className="chat__infos pl-2 pl-md-0">
                             <div className="chat-member__wrapper" data-online="true">
                                 <div className="chat-member__avatar">
-                                    <img src={currentUser ? currentUser?.profilePicture : './avatar_placeholder.png'} alt={currentUser && currentUser.username} loading="lazy"/>
+                                    <img src={!currentChatContact?.profilePicture && './avatar_placeholder.png'} alt={currentChatContact && currentChatContact.username} loading="lazy"/>
                                     <div className="user-status user-status--large"></div>
                                 </div>
                                 <div className="chat-member__details">
-                                    <span className="chat-member__name">{currentUser ? currentUser.username : 'John Doe'}</span>
-                                    <span className="chat-member__status">{currentUser ? currentUser?.status : 'Offline'}</span>
+                                    <span className="chat-member__name">{currentChatContact ? currentChatContact.username : 'John Doe'}</span>
+                                    <span className="chat-member__status">{currentChatContact ? currentChatContact?.status : 'Offline'}</span>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +122,7 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                                         </div>
                                     </li>
                                 )) 
-                                : <p>Open a conversation</p>
+                                : <p style={{textAlign: 'center', marginTop: '30px'}}>Open a conversation</p>
                             }               
                         </ul>
                     </div>

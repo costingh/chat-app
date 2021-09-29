@@ -888,3 +888,18 @@ body {
     background: var(--bg-page-darkest);
   }
 }
+
+.add_contact--btn {
+  text-align: center;
+  padding: 10px 30px;
+  border-radius: 20px; 
+  background: var(--colour-primary);
+  color: #fff; 
+  max-width: 250px; 
+  margin: 20px auto; 
+  cursor: pointer;
+  transition: all .3s ease;
+  &:hover {
+    background: var(--colour-primary-darker);
+  }
+}

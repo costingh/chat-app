@@ -1,17 +1,29 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import AddNewContact from './AddNewContact'
 import ConversationsService from '../services/conversations.service'
 
 function ChatInfos({currentConversation, currentChatContact, showAddContactForm}) {
 
     const closeUserProfile = () => {
-        const chat = document.querySelector('.chat');
-        chat.classList.remove('chat--mobile');
-
         const profile = document.querySelector('.user-profile');
         profile.classList.remove('user-profile--show');
     }
 
+    useEffect(() => {
+        const profile = document.querySelector('.user-profile');
+        if(window.innerWidth <= 1200) profile.classList.add('user-profile--large'); 
+        else profile.classList.remove('user-profile--large');
+    }, [])
+
+    useEffect(() => {
+        const handleResize = () => {
+            const profile = document.querySelector('.user-profile');
+            if(window.innerWidth <= 1200) profile.classList.add('user-profile--large'); 
+            else profile.classList.remove('user-profile--large');
+        }
+        window.addEventListener('resize', handleResize)
+    })
+    
     const deleteContact = () => {
         ConversationsService.deleteConversation(currentConversation)
             .then((resp) => {
@@ -21,7 +33,7 @@ function ChatInfos({currentConversation, currentChatContact, showAddContactForm}
     }
 
     return (
-        <div className="col-12 col-md-5 col-lg-4 col-xl-3 px-4 px-sm-5 px-lg-4 user-profile">
+        <div className="col-12 col-md-5 col-lg-4 col-xl-3 px-4 px-sm-5 px-lg-4 user-profile user" style={{display: 'block'}}>
             <div className="user-profile__close d-flex d-xl-none" onClick={closeUserProfile}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon" viewBox="0 0 38.8 38.9">
                     <g>
@@ -63,7 +75,7 @@ function ChatInfos({currentConversation, currentChatContact, showAddContactForm}
                     </ul>
                 </div>
                 <AddNewContact showAddContactForm={showAddContactForm}/>
-                <div style={{padding: '10px 30px', borderRadius: '20px', background:'tomato', color: '#fff', maxWidth: '200px', margin: '20px auto', cursor: 'pointer'}} onClick={deleteContact}>Delete Contact</div>
+                {currentChatContact && <div style={{padding: '10px 30px', borderRadius: '20px', background:'tomato', color: '#fff', maxWidth: '200px', margin: '20px auto', cursor: 'pointer'}} onClick={deleteContact}>Delete Contact</div>}
             </div>
         </div>
     )

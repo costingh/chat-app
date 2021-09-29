@@ -94,50 +94,40 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
         }
     }
 
+    const getNewContactDetails = async (conversation, participant, allContacts) => {
+        let participantId = participant === 'one' ? conversation.participantOneId : conversation.participantTwoId;
+        try {
+          const user = AuthService.getUser(participantId);
+          user.then((userResponse) => {
+            const lastMessage = MessagesService.getLastMessageFromConversation(conversation.id);
+            lastMessage.then((messageResponse) => {
+                allContacts.push({
+                    ...userResponse.data,
+                    conversationId: conversation.id,
+                    lastMessage: messageResponse.data
+                }) 
+            })
+          })
+        } catch (err) {
+          console.log('Could not retrieve information!')
+        }
+    }
+
     useEffect(() => {
         if(conversations.length !== 0) {
             const allContacts = [];
             conversations.map((conv) => {
-                if(conv.participantOneId !== currentUser.id) {
-                    let contact;
-                    AuthService.getUser(conv.participantOneId)
-                        .then((response) => { 
-                            MessagesService.getLastMessageFromConversation(conv.id)
-                                .then((res) => { 
-                                    let lastMessage = res.data;
-                                    contact = {
-                                        ...response.data,
-                                        conversationId: conv.id,
-                                        lastMessage: lastMessage
-                                    } 
-                                    allContacts.push(contact) 
-                                })
-                                .catch((err) => console.log(err))
-                        })
-                        .catch((err) => console.log(err))
-                } else {
-                    let contact;
-                    AuthService.getUser(conv.participantTwoId)
-                        .then((response) => { 
-                            MessagesService.getLastMessageFromConversation(conv.id)
-                                .then((res) => { 
-                                    let lastMessage = res.data;
-                                    contact = {
-                                        ...response.data,
-                                        conversationId: conv.id,
-                                        lastMessage: lastMessage
-                                    } 
-                                    allContacts.push(contact) 
-                                })
-                                .catch((err) => console.log(err))
-                        })
-                        .catch((err) => console.log(err))
-                }
+                if(conv.participantOneId !== currentUser.id) getNewContactDetails(conv, 'one', allContacts)
+                else getNewContactDetails(conv, 'two', allContacts)
             })
 
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 setContacts(allContacts);
-            }, 1000)            
+            }, 1000)        
+            
+            return () => {
+                timeout.clearTimeout();
+            }
         }
     }, [conversations])
 

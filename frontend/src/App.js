@@ -63,10 +63,10 @@ const App = () => {
 
   return (
       <Router history={history}>
-        <Navbar
+        {/* <Navbar
           currentUser={currentUser}
           logOut={logOut}
-        />
+        /> */}
         <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />

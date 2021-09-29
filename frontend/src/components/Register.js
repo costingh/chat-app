@@ -7,6 +7,7 @@ import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
 import { register } from "../actions/auth";
+import {Link } from "react-router-dom";
 
 const required = (value) => {
   if (!value) {
@@ -156,6 +157,12 @@ const Register = () => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
+        <div className="text-center">
+          <p>Already have an account?</p>
+          <Link to={"/login"}>
+            Login
+          </Link>
+        </div>
       </div>
     </div>
   );

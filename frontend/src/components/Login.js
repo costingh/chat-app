@@ -7,6 +7,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import { login } from "../actions/auth";
+import {Link } from "react-router-dom";
 
 const required = (value) => {
   if (!value) {
@@ -118,6 +119,12 @@ const Login = (props) => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
+        <div className="text-center">
+          <p>New member?</p>
+          <Link to={"/register"}>
+            Sign up now
+          </Link>
+        </div>
       </div>
     </div>
   );

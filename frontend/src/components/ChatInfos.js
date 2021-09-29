@@ -1,7 +1,8 @@
 import React from 'react'
 import AddNewContact from './AddNewContact'
+import ConversationsService from '../services/conversations.service'
 
-function ChatInfos({currentChatContact, showAddContactForm}) {
+function ChatInfos({currentConversation, currentChatContact, showAddContactForm}) {
 
     const closeUserProfile = () => {
         const chat = document.querySelector('.chat');
@@ -9,6 +10,14 @@ function ChatInfos({currentChatContact, showAddContactForm}) {
 
         const profile = document.querySelector('.user-profile');
         profile.classList.remove('user-profile--show');
+    }
+
+    const deleteContact = () => {
+        ConversationsService.deleteConversation(currentConversation)
+            .then((resp) => {
+                window.location.reload(false);
+            })
+            .catch((err) => {alert('Could not delete conversation')})
     }
 
     return (
@@ -54,6 +63,7 @@ function ChatInfos({currentChatContact, showAddContactForm}) {
                     </ul>
                 </div>
                 <AddNewContact showAddContactForm={showAddContactForm}/>
+                <div style={{padding: '10px 30px', borderRadius: '20px', background:'tomato', color: '#fff', maxWidth: '200px', margin: '20px auto', cursor: 'pointer'}} onClick={deleteContact}>Delete Contact</div>
             </div>
         </div>
     )

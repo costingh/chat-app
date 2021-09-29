@@ -221,7 +221,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                                     <div className="user-status"></div>
                                                 </div>
                                                 <span className="messaging-member__name">{contact.username}</span>
-                                                <span className="messaging-member__message">{contact?.lastMessage.body}</span>
+                                                <span className="messaging-member__message">{contact?.lastMessage?.body ? contact?.lastMessage?.body : 'No messages yet'}</span>
                                             </div>
                                         </li>
                                {/*  return  <li 

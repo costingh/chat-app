@@ -139,30 +139,6 @@ function Chat() {
 		profile.classList.remove('user-profile--large');
 	}
 
-/* 
-$(".messaging-member").click(function () {
-  $chat.fadeIn();
-  $chat.addClass("chat--show");
-});
-
-$(".chat__previous").click(function () {
-  $chat.removeClass("chat--show");
-});
-
-$(".chat__details").click(function () {
-  $profile.fadeIn();
-  $profile.addClass("user-profile--show");
-});
-
-$(".user-profile__close").click(function () {
-  $profile.removeClass("user-profile--show");
-});
-
-$(".messages-page__dark-mode-toogler").click(function () {
-  $("body").toggleClass("dark-mode");
-}); */
-
-
     return (
 		<div className="home-page__content messages-page">
 			<div className="container-fluid h-100">
@@ -186,6 +162,7 @@ $(".messages-page__dark-mode-toogler").click(function () {
 					<ChatInfos
 						currentChatContact={currentChatContact}
 						showAddContactForm={showAddContactForm}
+						currentConversation={currentConversation}
 					/>
 				</div>
 			</div>

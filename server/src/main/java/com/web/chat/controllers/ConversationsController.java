@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -57,20 +59,21 @@ public class ConversationsController {
 
         query.addCriteria(new Criteria().orOperator(criteria.toArray(new Criteria[criteria.size()])));
 
-        List<Conversations> conversations = mongoTemplate.find(query, Conversations.class);
-        return conversations;
+        return mongoTemplate.find(query, Conversations.class);
     }
 
     @GetMapping("/{conversationId}")
     public Optional<Conversations> getConversation(@PathVariable String conversationId) {
-        Optional<Conversations> conversations = conversationRepository.findById(conversationId);
-        return conversations;
+        return conversationRepository.findById(conversationId);
     }
 
     @DeleteMapping("/delete/{conversationId}")
-    public String deleteConversation(@PathVariable Conversations conversationId) {
-        conversationRepository.delete(conversationId);
-        return "Conversation has been deleted successfully!";
+    public ResponseEntity<String> deleteConversation(@PathVariable String conversationId) {
+        if (!conversationRepository.existsById(conversationId)) {
+            return new ResponseEntity<>("Not Found!", HttpStatus.NOT_FOUND);
+        }
+        conversationRepository.deleteById(conversationId);
+        return new ResponseEntity<>("Deleted successfully!", HttpStatus.OK);
     }
 }
 

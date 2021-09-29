@@ -34,7 +34,8 @@ public class MessagesController {
         Query query = new Query();
         query.addCriteria(Criteria.where("conversationId").is(conversationId));
         List<Message> messages = mongoTemplate.find(query, Message.class);
-        return messages.get(messages.size()-1);
+        if(!messages.isEmpty()) return messages.get(messages.size()-1);
+        else return null;
     }
 }
 

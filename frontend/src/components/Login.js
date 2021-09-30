@@ -71,7 +71,11 @@ const Login = (props) => {
     <div className="col-md-12">
       <div className="card card-container">
         <img
+<<<<<<< HEAD
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+=======
+          src="/chat-app/ssl.gstatic.com/accounts/ui/avatar_2x.png"
+>>>>>>> d0f48cdcd093ef497a4658111311a3d588a80b9b
           alt="profile-img"
           className="profile-img-card"
         />

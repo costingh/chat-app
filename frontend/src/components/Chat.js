@@ -67,24 +67,33 @@ function Chat() {
 	const stomp = useRef(null);
 	
 	let messagesSubscriptions = [];
-
+	let onlineUsersIds2 = []
 	const [currentChatContact, setCurrentChatContact] = useState(null);
 
 	useEffect(() => {
 			ws.current = new SockJS(SOCKET_URL);
 			stomp.current = Stomp.over(ws.current);
 			stomp.current.reconnect_delay = 5000;
-
+			
 			stomp.current.connect({}, frame => {
-				stomp.current.send(`/app/send/online-user`, {}, JSON.stringify(currentUser.id));
+				const connectedUser = {
+					userId: currentUser.id
+				}
+				stomp.current.send(`/app/send/online-user`, {}, JSON.stringify(connectedUser));
 
 				let onlineContactsSubscription = stomp.current.subscribe(`/topic/online-user`, connectAction => {
-					setOnlineUsersIds(onlineUsersIds => [...onlineUsersIds, JSON.parse(connectAction.body)]);
+					// prevent duplicate
+					/* if(onlineUsersIds.length !== 0 && onlineUsersIds.find(id => id !== connectAction.body)) {
+						console.log('****************************** ADD')
+					} */
+					setOnlineUsersIds(onlineUsersIds => [...onlineUsersIds, connectAction.body]);
+					/* setOnlineUsersIds([connectAction.body]) */
+					
+					
 				});
 
 				let offlineContactsSubscription = stomp.current.subscribe(`/topic/disconnect-user`, disconnectAction => {
-					const disconnectedUserId = JSON.parse(disconnectAction.body);
-					const users = onlineUsersIds.filter(onlineUser => onlineUser.id !== disconnectedUserId);
+					const users = onlineUsersIds.filter(onlineUser => onlineUser.id !== disconnectAction.body);
 					setOnlineUsersIds(users);
 				});
 
@@ -104,7 +113,10 @@ function Chat() {
 	}, [currentConversation])
 
 	const disconnect = () => {
-		stomp.current.send(`/app/send/disconnect-user`, {}, JSON.stringify(currentUser.id));
+		const disconnectedUser = {
+			userId: currentUser.id
+		}
+		stomp.current.send(`/app/send/disconnect-user`, {}, JSON.stringify(disconnectedUser));
 		stomp.current.disconnect(frame => {
 			if(messagesSubscriptions) messagesSubscriptions.map(subscription => subscription.unsubscribe())
 		}, {})

@@ -31,6 +31,8 @@ public class User {
     @DBRef
     private Set<Role> roles = new HashSet<>();
 
+    private String status;
+
     public User() {
     }
 
@@ -78,5 +80,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -13,6 +13,9 @@ import com.web.chat.security.jwt.JwtUtils;
 import com.web.chat.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -64,7 +67,8 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                roles,
+                userDetails.getStatus()));
     }
 
     @PostMapping("/signup")
@@ -117,6 +121,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
+        user.setStatus("offline");
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
@@ -130,5 +135,16 @@ public class AuthController {
     @GetMapping("/user/{userId}")
     public Optional<User> getUser(@PathVariable String userId) {
         return userRepository.findById(userId);
+    }
+
+    @PostMapping("/user/{userId}/update-status")
+    public String updateUser(@PathVariable String userId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isPresent()) {
+            user.get().setStatus("online");
+            userRepository.save(user.get());
+        }
+        return userId;
     }
 }

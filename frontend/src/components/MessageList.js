@@ -12,19 +12,53 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
     const [allUsersList, setAllUsersList] = useState([]);
     const [conversations, setConversations] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [realTimeContacts, setRealTimeContacts] = useState([]);
 
     useEffect(() => {
-        console.log('onlineUsersIds')
-        console.log(onlineUsersIds)
-        console.log('contacts')
-        console.log(contacts)
+        if(contacts.length !== 0) {
+            setRealTimeContacts(contacts)
+        }
+    }, [contacts])
+
+    useEffect(() => {
+        let timeout;
+        const timeout0 = setTimeout(() => {
+            const contactList = [];
+
+            contacts.map(contact => {
+                if(contact.status === 'online') {
+                    if(onlineUsersIds.includes(contact.id)) contactList.push(contact)
+                    else {
+                        let updatedContact = {...contact};
+                        updatedContact.status = 'offline'
+                        contactList.push(updatedContact)
+                    }
+                } else {
+                    if(!onlineUsersIds.includes(contact.id)) contactList.push(contact)
+                    else {
+                        let updatedContact = {...contact};
+                        updatedContact.status = 'online'
+                        contactList.push(updatedContact)
+                    }
+                }
+            })
+            
+            timeout = setTimeout(() => {
+                setRealTimeContacts(contactList);
+            }, 1000)
+        }, 3000)
+
+        return () => {
+            clearTimeout(timeout);
+            clearTimeout(timeout0);
+        }
     }, [onlineUsersIds, contacts])
 
     useEffect(() => {
         ConversationsService.getAUserConversations(currentUser.id)
             .then((resp) => {setConversations(resp.data)})
             .catch((err) => console.log(err))
-    }, [])
+    }, [currentUser.id])
 
     useEffect(() => {
         if(contactForm) {
@@ -130,10 +164,10 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
             }, 1000)        
             
             return () => {
-                timeout.clearTimeout();
+                clearTimeout(timeout);
             }
         }
-    }, [conversations])
+    }, [conversations, currentUser.id])
 
     const toggleDarkMode = () => {
         const body = document.querySelector('body');
@@ -142,9 +176,9 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
         } else {
             body.classList.add('dark-mode')
         }
-       
     }
 
+    /* onlineUsersIds.find(id => contact.id === id)  */
 
     return (
         <div className="col-12 col-md-4 col-lg-5 col-xl-3 px-0 messages-page__list-scroll">
@@ -208,17 +242,17 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                         </div>
                                     </li>
                         })
-                        : contacts.length === 0
+                        : realTimeContacts.length === 0
                             ? <div>
                                 <div style={{marginTop: '10px', textAlign: 'center'}}>No conversations yet...</div>
                                 <AddNewContact showAddContactForm={showAddContactForm}/>
                             </div>
-                            : contacts.map(contact => {
+                            : realTimeContacts.map(contact => {
                                 return  <li 
                                             key={contact.id}
                                             className={`
                                                 messaging-member 
-                                                ${onlineUsersIds.find(id => contact.id === id) 
+                                                ${contact.status === 'online'
                                                     ? 'messaging-member--online' 
                                                     : ''} 
                                                 ${currentChatContact && 

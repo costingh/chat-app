@@ -38,7 +38,13 @@ public class WebSocketTextController {
 
     @MessageMapping("/send/online-user")
     @SendTo("/topic/online-user")
-    public String sendMessage(@Payload String onlineUserId) {
+    public String connectUser(@Payload String onlineUserId) {
+        return onlineUserId;
+    }
+
+    @MessageMapping("/send/disconnect-user")
+    @SendTo("/topic/disconnect-user")
+    public String disconnectUser(@Payload String onlineUserId) {
         return onlineUserId;
     }
 }

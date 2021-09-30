@@ -82,22 +82,38 @@ function Chat() {
 					setOnlineUsersIds(onlineUsersIds => [...onlineUsersIds, JSON.parse(connectAction.body)]);
 				});
 
+				let offlineContactsSubscription = stomp.current.subscribe(`/topic/disconnect-user`, disconnectAction => {
+					const disconnectedUserId = JSON.parse(disconnectAction.body);
+					const users = onlineUsersIds.filter(onlineUser => onlineUser.id !== disconnectedUserId);
+					setOnlineUsersIds(users);
+				});
+
 				let newMessagesSubscription = stomp.current.subscribe(`/topic/${currentConversation}`, chatActions => {
 					const newMessage = JSON.parse(chatActions.body);
 					setMessages(messages => [...messages, newMessage]);
 				});
 
 				messagesSubscriptions.push(onlineContactsSubscription);
+				messagesSubscriptions.push(offlineContactsSubscription);
 				messagesSubscriptions.push(newMessagesSubscription);
-
-				// Use this line to cancel subscriptions
-				// messagesSubscriptions.map(subscription => subscription.unsubscribe())
 			});
 
 			return () => {
 				ws.current.close();
 			};
 	}, [currentConversation])
+
+	const disconnect = () => {
+		stomp.current.send(`/app/send/disconnect-user`, {}, JSON.stringify(currentUser.id));
+		stomp.current.disconnect(frame => {
+			if(messagesSubscriptions) messagesSubscriptions.map(subscription => subscription.unsubscribe())
+		}, {})
+	}
+
+	// disconnect user on page close
+	window.onbeforeunload = () => {
+		disconnect();
+	}
 
 	// Must come after useRef and useEffect !!
 	if (!currentUser) {

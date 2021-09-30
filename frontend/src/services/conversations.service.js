@@ -1,7 +1,8 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import BASE_URL from '../utils/baseUrl';
 
-const API_URL = "http://localhost:8080/api/conversation/";
+const API_URL = BASE_URL + "api/conversation/";
 
 const createConversation = (conversation) => {
   return axios.post(API_URL + "add", conversation, { headers: authHeader() });

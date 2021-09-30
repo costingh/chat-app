@@ -19,8 +19,9 @@ import '../styles/Chat.scss'
 import UserService from "../services/user.service"; */
 import EventBus from "../common/EventBus";
 import { useHistory } from "react-router-dom";
+import BASE_URL from '../utils/baseUrl';
 
-const SOCKET_URL = 'http://localhost:8080/ws-message';
+const SOCKET_URL = BASE_URL + 'ws-message';
 
 function Chat() {
 	const { user: currentUser } = useSelector((state) => state.auth);

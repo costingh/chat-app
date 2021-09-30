@@ -1,7 +1,8 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import BASE_URL from '../utils/baseUrl';
 
-const API_URL = "http://localhost:8080/api/messages/";
+const API_URL = BASE_URL + "api/messages/";
 
 const getAllMessagesFromConversation = (conversationId) => {
   return axios.get(API_URL + `all-messages/${conversationId}`, { headers: authHeader() });

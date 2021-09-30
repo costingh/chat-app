@@ -1,0 +1,1 @@
+export default "https://chat-app-spring-boot.herokuapp.com/"

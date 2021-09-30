@@ -27,15 +27,24 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
 
             contacts.map(contact => {
                 if(contact.status === 'online') {
-                    if(onlineUsersIds.includes(contact.id)) contactList.push(contact)
+                    if(onlineUsersIds.includes(contact.id)) {
+                        contactList.push(contact)
+                       // console.log('User is online and in array')
+                    }
                     else {
-                        let updatedContact = {...contact};
-                        updatedContact.status = 'offline'
-                        contactList.push(updatedContact)
+                        // console.log('User is only but not in array')
+                        contactList.push(contact)
                     }
                 } else {
-                    if(!onlineUsersIds.includes(contact.id)) contactList.push(contact)
+                    if(!onlineUsersIds.includes(contact.id)) {
+                        // console.log('User is offline but not in array')
+                        contactList.push(contact)   
+                    }
                     else {
+                        // console.log('User is offline but in array')
+                        UserService.updateStatus(contact.id, 'online')
+                            .then((resp) => console.log(resp))
+
                         let updatedContact = {...contact};
                         updatedContact.status = 'online'
                         contactList.push(updatedContact)

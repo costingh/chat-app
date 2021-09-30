@@ -4,6 +4,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import MessageList from './MessageList'
 import ChatContent from './ChatContent'
 import ChatInfos from './ChatInfos'
+import UserService from '../services/auth.service';
 // redux 
 import { useSelector } from "react-redux";
 // sockets
@@ -80,16 +81,11 @@ function Chat() {
 					userId: currentUser.id
 				}
 				stomp.current.send(`/app/send/online-user`, {}, JSON.stringify(connectedUser));
+				UserService.updateStatus(currentUser.id, 'online')
+				.then((resp) => console.log(resp))
 
 				let onlineContactsSubscription = stomp.current.subscribe(`/topic/online-user`, connectAction => {
-					// prevent duplicate
-					/* if(onlineUsersIds.length !== 0 && onlineUsersIds.find(id => id !== connectAction.body)) {
-						console.log('****************************** ADD')
-					} */
-					setOnlineUsersIds(onlineUsersIds => [...onlineUsersIds, connectAction.body]);
-					/* setOnlineUsersIds([connectAction.body]) */
-					
-					
+					setOnlineUsersIds(onlineUsersIds => [...onlineUsersIds, connectAction.body]);									
 				});
 
 				let offlineContactsSubscription = stomp.current.subscribe(`/topic/disconnect-user`, disconnectAction => {

@@ -38,10 +38,15 @@ const getUser = (userId) => {
   return axios.get(API_URL + `user/${userId}`, { headers: authHeader() });
 };
 
+const updateStatus = (userId, status) => {
+  return axios.post(API_URL + `user/update-status`, {userId, status});
+};
+
 export default {
   register,
   login,
   logout,
   getAllUsers,
-  getUser
+  getUser,
+  updateStatus
 };

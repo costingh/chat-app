@@ -4,7 +4,9 @@ import com.web.chat.models.ERole;
 import com.web.chat.models.Role;
 import com.web.chat.models.User;
 import com.web.chat.payload.request.LoginRequest;
+import com.web.chat.payload.request.OnlineUserRequest;
 import com.web.chat.payload.request.SignupRequest;
+import com.web.chat.payload.request.UpdateStatus;
 import com.web.chat.payload.response.JwtResponse;
 import com.web.chat.payload.response.MessageResponse;
 import com.web.chat.repository.RoleRepository;
@@ -137,14 +139,14 @@ public class AuthController {
         return userRepository.findById(userId);
     }
 
-    @PostMapping("/user/{userId}/update-status")
-    public String updateUser(@PathVariable String userId) {
-        Optional<User> user = userRepository.findById(userId);
+    @PostMapping("/user/update-status")
+    public String updateUser(@RequestBody UpdateStatus updateStatus) {
+        Optional<User> user = userRepository.findById(updateStatus.getUserId());
 
         if(user.isPresent()) {
-            user.get().setStatus("online");
+            user.get().setStatus(updateStatus.getStatus());
             userRepository.save(user.get());
         }
-        return userId;
+        return updateStatus.getStatus();
     }
 }

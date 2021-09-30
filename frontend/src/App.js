@@ -10,8 +10,8 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
+/* import BoardModerator from "./components/BoardModerator";
+import BoardAdmin from "./components/BoardAdmin"; */
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
@@ -20,7 +20,7 @@ import { history } from "./helpers/history";
 
 import AuthVerify from "./common/AuthVerify";
 import EventBus from "./common/EventBus";
-import Navbar from "./components/Navbar";
+/* import Navbar from "./components/Navbar"; */
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -63,10 +63,6 @@ const App = () => {
 
   return (
       <Router history={history}>
-        {/* <Navbar
-          currentUser={currentUser}
-          logOut={logOut}
-        /> */}
         <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />

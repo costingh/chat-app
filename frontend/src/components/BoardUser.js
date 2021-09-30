@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 
-/* import UserService from "../services/user.service";
-import EventBus from "../common/EventBus"; */
+import UserService from "../services/user.service";
+import EventBus from "../common/EventBus";
 import Chat from "./Chat";
 
 const BoardUser = () => {
-  const [content, setContent] = useState("");
+  const [showChat, setShowChat] = useState("");
 
-  /* useEffect(() => {
+  useEffect(() => {
     UserService.getUserBoard().then(
       (response) => {
-        setContent(response.data);
+        setShowChat(true);
+        console.log(response.data)
       },
       (error) => {
         const _content =
@@ -20,17 +21,20 @@ const BoardUser = () => {
           error.message ||
           error.toString();
 
-        setContent(_content);
+          setShowChat(false);
+          console.log(_content)
 
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
         }
       }
     );
-  }, []); */
+  }, []);
 
   return (
-      <Chat/>
+      <>
+        {showChat && <Chat/>}
+      </>
     );
   };
   

@@ -2,7 +2,7 @@ import React, {useRef, useState, useEffect} from 'react'
 import {getQueryParam} from '../utils/utils'
 import MessagesService from '../services/messages.service'
 
-function ChatContent({messages, setMessages, sendMessage, currentUser, currentChatContact, currentConversation}) {
+function ChatContent({messages, setMessages, sendMessage, currentUser, currentChatContact, currentConversation, logOut}) {
     const messageRef = useRef();
 
     useEffect(() => {
@@ -88,6 +88,11 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                         </div>
                         <div className="chat__actions mr-2 ">
                             <ul className="m-0">
+                                <li>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon" viewBox="0 0 24 24" onClick={logOut}>
+                                        <path d="M10 2v2h12v16h-12v2h14v-20h-14zm0 7.408l2.963 2.592-2.963 2.592v-1.592h-8v-2h8v-1.592zm-2-4.408v4h-8v6h8v4l8-7-8-7z"/>
+                                    </svg>
+                                </li>
                                 <li>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="svg-icon" viewBox="0 0 48 48">
                                         <path d="M38.4,48c-2.1,0-5.1-.8-9.5-3.2a62.9,62.9,0,0,1-14.6-11A61.7,61.7,0,0,1,3.2,19C-.9,11.8-.3,8.5.7,6.4A9.7,9.7,0,0,1,4.8,2,21.1,21.1,0,0,1,7.8.4h.3c1.8-.7,3-.3,4.9,1.5h.1a40.1,40.1,0,0,1,5.4,8.2c1.3,2.6,1.6,4.3-.2,6.9l-.5.6c-.8,1-.8,1.2-.8,1.6s1.9,3.4,5.2,6.7S28,30.8,28.8,31s.6,0,1.6-.8l.7-.4c2.5-1.9,4.2-1.6,6.8-.3A40.6,40.6,0,0,1,46.1,35h.1c1.8,1.9,2.2,3.1,1.5,4.9v.2h0a21.1,21.1,0,0,1-1.6,3,10,10,0,0,1-4.3,4.1A7.7,7.7,0,0,1,38.4,48ZM9.5,4.1H9.2L6.9,5.4H6.8A6.3,6.3,0,0,0,4.3,8.1c-.3.7-1.2,2.6,2.4,9A58.9,58.9,0,0,0,17.1,30.9,58.2,58.2,0,0,0,30.9,41.3c6.4,3.6,8.4,2.7,9.1,2.4a6.7,6.7,0,0,0,2.5-2.5.1.1,0,0,0,.1-.1c.5-.8.9-1.6,1.3-2.4v-.2l-.5-.6a35.4,35.4,0,0,0-7.3-4.8c-1.7-.8-1.8-.8-2.7-.1l-.6.4A5.3,5.3,0,0,1,28,34.9c-2.9-.6-7.4-4.9-8.7-6.2s-5.6-5.8-6.2-8.7.6-3.6,1.5-4.8l.4-.6c.7-.9.8-1-.1-2.7a35.4,35.4,0,0,0-4.8-7.3Z" fill="#f68b3c" />

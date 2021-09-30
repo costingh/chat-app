@@ -15,11 +15,15 @@ import { Redirect } from 'react-router-dom';
 import '../styles/Chat.scss'
 // utils
 import {getQueryParam} from '../utils/utils'
+import UserService from "../services/user.service";
+import EventBus from "../common/EventBus";
+import { useHistory, withRouter } from "react-router-dom";
 
 const SOCKET_URL = 'http://localhost:8080/ws-message';
 
 function Chat() {
 	const { user: currentUser } = useSelector((state) => state.auth);
+	let history = useHistory();
 
 	const CONNECTED_USER = {
 		id: currentUser.id,
@@ -106,6 +110,12 @@ function Chat() {
 		chat.classList.remove('chat--show');
 	}
 
+    const logOut = () => {
+		EventBus.dispatch("logout");
+        history.push('/');
+        window.location.reload();
+	}
+	
     return (
 		<div className="home-page__content messages-page">
 			<div className="container-fluid h-100">
@@ -126,6 +136,7 @@ function Chat() {
 						messages={messages}
 						setMessages={setMessages}
 						currentConversation={currentConversation}
+						logOut={logOut}
 					/>
 					<ChatInfos
 						currentChatContact={currentChatContact}

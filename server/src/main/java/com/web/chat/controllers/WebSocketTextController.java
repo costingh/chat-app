@@ -35,4 +35,10 @@ public class WebSocketTextController {
 
         return newMessage;
     }
+
+    @MessageMapping("/send/online-user")
+    @SendTo("/topic/online-user")
+    public String sendMessage(@Payload String onlineUserId) {
+        return onlineUserId;
+    }
 }

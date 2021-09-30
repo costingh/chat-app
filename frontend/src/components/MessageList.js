@@ -5,7 +5,7 @@ import MessagesService from '../services/messages.service';
 import UserService from '../services/auth.service';
 import AddNewContact from './AddNewContact';
 
-function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation, hideAddContactForm, contactForm, showAddContactForm}) {
+function MessageList({currentChatContact, setCurrentChatContact, currentUser, setCurrentConversation, hideAddContactForm, contactForm, showAddContactForm, onlineUsersIds}) {
     const inputRef = useRef();
 
     const [filteredList, setFilteredList] = useState([]);
@@ -14,8 +14,12 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
+        console.log('onlineUsersIds')
+        console.log(onlineUsersIds)
+        console.log('contacts')
         console.log(contacts)
-    }, [contacts])
+    }, [onlineUsersIds, contacts])
+
     useEffect(() => {
         ConversationsService.getAUserConversations(currentUser.id)
             .then((resp) => {setConversations(resp.data)})
@@ -150,7 +154,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                         ? <div style={{ cursor: 'pointer'}} onClick={hideAddContactForm}>
                             <svg style={{marginBottom: '3px'}} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg> Go Back
                         </div>
-                        : 'Chats'
+                        : currentUser.username
                     }
                 </span>
                 <div className="messages-page__dark-mode-toogler" onClick={toggleDarkMode}>
@@ -209,12 +213,12 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                 <div style={{marginTop: '10px', textAlign: 'center'}}>No conversations yet...</div>
                                 <AddNewContact showAddContactForm={showAddContactForm}/>
                             </div>
-                            : contacts.map((contact, index) => {
+                            : contacts.map(contact => {
                                 return  <li 
-                                            key={index}
+                                            key={contact.id}
                                             className={`
                                                 messaging-member 
-                                                ${contact?.status === 'online' 
+                                                ${onlineUsersIds.find(id => contact.id === id) 
                                                     ? 'messaging-member--online' 
                                                     : ''} 
                                                 ${currentChatContact && 
@@ -232,29 +236,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                                 <span className="messaging-member__message">{contact?.lastMessage?.body ? contact?.lastMessage?.body : 'No messages yet'}</span>
                                             </div>
                                         </li>
-                               {/*  return  <li 
-                                            key={index}
-                                            className={`
-                                                messaging-member messaging-member--new 
-                                                ${contact.status === 'online' 
-                                                    ? 'messaging-member--online' 
-                                                    : ''} 
-                                                ${currentChatContact && 
-                                                    currentChatContact.id === contact.id 
-                                                        ? 'messaging-member--active' 
-                                                        : ''}`}
-                                            onClick={() => changeActiveUser(contact)}
-                                        >
-                                            <div className="messaging-member__wrapper">
-                                                <div className="messaging-member__avatar">
-                                                    <img src={contact.profilePicture} alt={contact.username} loading="lazy"/>
-                                                    <div className="user-status"></div>
-                                                </div>
-                                                <span className="messaging-member__name">{contact.username}</span>
-                                                <span className="messaging-member__message">{contact.lastMessage}</span>
-                                            </div>
-                                        </li> */}
-                            })
+                        })
                 }
             </ul>
         </div>

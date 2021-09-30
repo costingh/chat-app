@@ -14,23 +14,24 @@ import { Redirect } from 'react-router-dom';
 // styles
 import '../styles/Chat.scss'
 // utils
-import {getQueryParam} from '../utils/utils'
-import UserService from "../services/user.service";
+/* import {getQueryParam} from '../utils/utils'
+import UserService from "../services/user.service"; */
 import EventBus from "../common/EventBus";
-import { useHistory, withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const SOCKET_URL = 'http://localhost:8080/ws-message';
 
 function Chat() {
 	const { user: currentUser } = useSelector((state) => state.auth);
 	let history = useHistory();
+	const [status, setStatus] = useState('offline')
 
 	const CONNECTED_USER = {
 		id: currentUser.id,
         profilePicture: 'https://randomuser.me/api/portraits/thumb/men/2.jpg',
         username: currentUser.username,
         lastMessage: 'Yes, I need your help with the project, it need it done by tomorrow 😫',
-        status: 'online',
+        status: status,
         conversations: [
             'stppvuuidjkel123'
         ],
@@ -60,6 +61,7 @@ function Chat() {
 	const [currentConversation, setCurrentConversation] = useState(null);
 	const [messages, setMessages] = useState([]);
 	const [contactForm, setContactForm] = useState(false);
+	const [onlineUsersIds, setOnlineUsersIds] = useState([]);
 	
 	const ws = useRef(null);
 	const stomp = useRef(null);
@@ -74,12 +76,22 @@ function Chat() {
 			stomp.current.reconnect_delay = 5000;
 
 			stomp.current.connect({}, frame => {
+				stomp.current.send(`/app/send/online-user`, {}, JSON.stringify(currentUser.id));
+
+				let onlineContactsSubscription = stomp.current.subscribe(`/topic/online-user`, connectAction => {
+					setOnlineUsersIds(onlineUsersIds => [...onlineUsersIds, JSON.parse(connectAction.body)]);
+				});
+
 				let newMessagesSubscription = stomp.current.subscribe(`/topic/${currentConversation}`, chatActions => {
 					const newMessage = JSON.parse(chatActions.body);
 					setMessages(messages => [...messages, newMessage]);
 				});
 
+				messagesSubscriptions.push(onlineContactsSubscription);
 				messagesSubscriptions.push(newMessagesSubscription);
+
+				// Use this line to cancel subscriptions
+				// messagesSubscriptions.map(subscription => subscription.unsubscribe())
 			});
 
 			return () => {
@@ -128,6 +140,7 @@ function Chat() {
 						hideAddContactForm={hideAddContactForm}
 						contactForm={contactForm}
 						showAddContactForm={showAddContactForm}
+						onlineUsersIds={onlineUsersIds}
 					/>
 					<ChatContent 
 						sendMessage={sendMessage}

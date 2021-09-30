@@ -22,7 +22,7 @@ function Navbar({currentUser, logOut}) {
                 </Link>
               </li>
               <li className="nav-item">
-                <a href="/login" className="nav-link" onClick={logOut}>
+                <a href="/chat-app/login" className="nav-link" onClick={logOut}>
                   LogOut
                 </a>
               </li>

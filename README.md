@@ -9,4 +9,3 @@ This is a chat application built using React (create-react-app), Spring Boot, Mo
 Test credentials:
 * USERNAME: user-test
 * PASSWORD: password-test
-git

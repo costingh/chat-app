@@ -52,7 +52,7 @@ const Login = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       dispatch(login(username, password))
         .then(() => {
-          props.history.push("/chat");
+          props.history.push("/chat-app/chat");
           window.location.reload();
         })
         .catch(() => {
@@ -71,7 +71,7 @@ const Login = (props) => {
     <div className="col-md-12">
       <div className="card card-container">
         <img
-          src="/ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
         />

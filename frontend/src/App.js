@@ -29,9 +29,9 @@ const App = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    history.push('/login')
-  }, [])
+  /* useEffect(() => {
+    history.push('/chat-app/login')
+  }, []) */
 
   useEffect(() => {
     history.listen((location) => {
@@ -64,8 +64,8 @@ const App = () => {
   return (
       <Router history={history}>
         <Switch>
-            <Route exact path={["/chat-app/", "/chat-app/home"]} component={Home} />
-            <Route exact path="/chat-app/login" component={Login} />
+            {/* <Route exact path={["/chat-app/", "/chat-app/home"]} component={Home} /> */}
+            <Route exact path={["/chat-app/", "/chat-app/login"]} component={Login} />
             <Route exact path="/chat-app/register" component={Register} />
             <Route exact path="/chat-app/profile" component={Profile} />
             <Route path="/chat-app/chat" component={BoardUser} />

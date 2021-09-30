@@ -126,7 +126,7 @@ function Chat() {
 
 	// Must come after useRef and useEffect !!
 	if (!currentUser) {
-		return <Redirect to="/login" />;
+		return <Redirect to="/chat-app/login" />;
 	}
 
 	const sendMessage = (message) => {
@@ -149,7 +149,7 @@ function Chat() {
 
     const logOut = () => {
 		EventBus.dispatch("logout");
-        history.push('/');
+        history.push('/chat-app/');
         window.location.reload();
 	}
 	

@@ -77,7 +77,7 @@ function ChatContent({messages, setMessages, sendMessage, currentUser, currentCh
                         <div className="chat__infos pl-2 pl-md-0">
                             <div className="chat-member__wrapper" data-online="true">
                                 <div className="chat-member__avatar">
-                                    <img src={!currentChatContact?.profilePicture && './avatar_placeholder.png'} alt={currentChatContact && currentChatContact.username} loading="lazy"/>
+                                    <img src={!currentChatContact?.profilePicture && '/chat-app/avatar_placeholder.png'} alt={currentChatContact && currentChatContact.username} loading="lazy"/>
                                     <div className="user-status user-status--large"></div>
                                 </div>
                                 <div className="chat-member__details">

@@ -98,7 +98,7 @@ const Register = () => {
     <div className="col-md-12">
       <div className="card card-container">
         <img
-          src="/chat-app//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
         />
@@ -159,7 +159,7 @@ const Register = () => {
         </Form>
         <div className="text-center">
           <p>Already have an account?</p>
-          <Link to={"/chat-app/login"}>
+          <Link to={"/login"}>
             Login
           </Link>
         </div>

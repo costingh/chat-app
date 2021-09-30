@@ -125,9 +125,9 @@ function Chat() {
 	}
 
 	// Must come after useRef and useEffect !!
-	if (!currentUser) {
-		return <Redirect to="/chat-app/login" />;
-	}
+	/* if (!currentUser) {
+		return <Redirect to="/login" />;
+	} */
 
 	const sendMessage = (message) => {
 		stomp.current.send(`/app/send/${currentConversation}`, {}, JSON.stringify(message));
@@ -149,7 +149,7 @@ function Chat() {
 
     const logOut = () => {
 		EventBus.dispatch("logout");
-        history.push('/chat-app/');
+        history.push('/');
         window.location.reload();
 	}
 	

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, HashRouter } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -62,16 +62,13 @@ const App = () => {
   }, [currentUser, logOut]);
 
   return (
-      <Router history={history}>
-        <Switch>
-            {/* <Route exact path={["/chat-app/", "/chat-app/home"]} component={Home} /> */}
-            <Route exact path={["/chat-app/", "/chat-app/login"]} component={Login} />
-            <Route exact path="/chat-app/register" component={Register} />
-            <Route exact path="/chat-app/profile" component={Profile} />
-            <Route path="/chat-app/chat" component={BoardUser} />
-          </Switch>
+    <HashRouter basename='/'>
+        <Route exact path={["/", "/login"]} component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/profile" component={Profile} />
+        <Route path="/chat" component={BoardUser} />
         <AuthVerify logOut={logOut}/>
-    </Router>
+    </HashRouter>
   );
 };
 

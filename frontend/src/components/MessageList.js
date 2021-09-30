@@ -243,7 +243,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                     >
                                         <div className="messaging-member__wrapper">
                                             <div className="messaging-member__avatar">
-                                                <img src={user.profilePicture ? user.profilePicture : './avatar_placeholder.png'} alt={user.username} loading="lazy"/>
+                                                <img src={user.profilePicture ? user.profilePicture : '/chat-app/avatar_placeholder.png'} alt={user.username} loading="lazy"/>
                                                 <div className="user-status"></div>
                                             </div>
                                             <span className="messaging-member__name">{user.username}</span>
@@ -272,7 +272,7 @@ function MessageList({currentChatContact, setCurrentChatContact, currentUser, se
                                         >
                                             <div className="messaging-member__wrapper">
                                                 <div className="messaging-member__avatar">
-                                                    <img src={contact.profilePicture ? contact.profilePicture : './avatar_placeholder.png'} alt={contact.username} loading="lazy"/>
+                                                    <img src={contact.profilePicture ? contact.profilePicture : '/chat-app/avatar_placeholder.png'} alt={contact.username} loading="lazy"/>
                                                     <div className="user-status"></div>
                                                 </div>
                                                 <span className="messaging-member__name">{contact.username}</span>

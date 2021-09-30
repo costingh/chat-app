@@ -44,7 +44,7 @@ function ChatInfos({currentConversation, currentChatContact, showAddContactForm}
             </div>
             <div className="user-profile__wrapper">
                 <div className="user-profile__avatar">
-                    <img src={currentChatContact && currentChatContact.profilePicture ? currentChatContact.profilePicture : './avatar_placeholder.png'} alt={currentChatContact ? currentChatContact.username : 'image'} loading="lazy"/>
+                    <img src={currentChatContact && currentChatContact.profilePicture ? currentChatContact.profilePicture : '/chat-app/avatar_placeholder.png'} alt={currentChatContact ? currentChatContact.username : 'image'} loading="lazy"/>
                 </div>
                 <div className="user-profile__details mt-1">
                     <span className="user-profile__name">{currentChatContact ? currentChatContact.username : 'John Doe'}</span>

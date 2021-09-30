@@ -64,14 +64,14 @@ const Login = (props) => {
   };
 
   if (isLoggedIn) {
-    return <Redirect to="/chat" />;
+    return <Redirect to="/chat-app/chat" />;
   }
 
   return (
     <div className="col-md-12">
       <div className="card card-container">
         <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          src="/ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
         />
@@ -121,7 +121,7 @@ const Login = (props) => {
         </Form>
         <div className="text-center">
           <p>New member?</p>
-          <Link to={"/register"}>
+          <Link to={"/chat-app/register"}>
             Sign up now
           </Link>
         </div>

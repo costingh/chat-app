@@ -159,7 +159,7 @@ const Register = () => {
         </Form>
         <div className="text-center">
           <p>Already have an account?</p>
-          <Link to={"/login"}>
+          <Link to={"/chat-app/login"}>
             Login
           </Link>
         </div>

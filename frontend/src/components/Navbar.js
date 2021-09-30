@@ -7,7 +7,7 @@ function Navbar({currentUser, logOut}) {
           <div className="navbar-nav mr-auto">
             {currentUser && (
               <li className="nav-item">
-                <Link to={"/chat"} className="nav-link">
+                <Link to={"/chat-app/chat"} className="nav-link">
                   Chat
                 </Link>
               </li>
@@ -17,7 +17,7 @@ function Navbar({currentUser, logOut}) {
           {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/profile"} className="nav-link">
+                <Link to={"/chat-app/profile"} className="nav-link">
                   {currentUser.username}
                 </Link>
               </li>
@@ -30,13 +30,13 @@ function Navbar({currentUser, logOut}) {
           ) : (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
+                <Link to={"/chat-app/login"} className="nav-link">
                   Login
                 </Link>
               </li>
 
               <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
+                <Link to={"/chat-app/register"} className="nav-link">
                   Sign Up
                 </Link>
               </li>

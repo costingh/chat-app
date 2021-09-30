@@ -8,4 +8,4 @@ This is a chat application built using React (create-react-app), Spring Boot, Mo
 
 Test credentials:
 * USERNAME: user-test
-* PASSWORD: email-test@gmail.com
+* PASSWORD: password-test
